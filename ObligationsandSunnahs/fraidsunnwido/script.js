@@ -1,7 +1,7 @@
 
 document.getElementById('copyButton').addEventListener('click', function () {
     const content = document.querySelector('.content').innerText;
-    const textToCopy = content + "\nتم النسخ من تطبيق هلال (helal-encyclopedia.netlify.app)";
+    const textToCopy = content + "\nتم النسخ من تطبيق هلال (helal-encyclopedia.vercel.app)";
     navigator.clipboard.writeText(textToCopy).then(function () {
         alert('تم النسخ');
     }, function (err) {
@@ -11,12 +11,12 @@ document.getElementById('copyButton').addEventListener('click', function () {
 
 document.getElementById('shareButton').addEventListener('click', function () {
     const content = document.querySelector('.content').innerText;
-    const textToShare = content + "\nتم المشاركة من تطبيق هلال (helal-encyclopedia.netlify.app)";
+    const textToShare = content + "\nتم المشاركة من تطبيق هلال (helal-encyclopedia.vercel.app)";
     if (navigator.share) {
         navigator.share({
             title: 'تطبيق هلال',
             text: textToShare,
-            url: 'https://helal-encyclopedia.netlify.app'
+            url: 'https://helal-encyclopedia.vercel.app'
         }).then(() => {
             alert('تمت المشاركة');
         }).catch((error) => {
