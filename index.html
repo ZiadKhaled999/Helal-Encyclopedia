@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helal</title>
+    <script src="./CDNs/tailwindcsscdn.js"></script>
+    <script src="./CDNs/moment.min.js"></script>
+    <script src="./CDNs/moment-hijri.min.js"></script>
+    <link rel="stylesheet" href="./CDNs/fontawesome/css/all.min.css">
+    <style>
+        /* Share Button */
+        .share-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Share Modal */
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 20px;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        /* Platforms Grid */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .platform-item {
+            cursor: pointer;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid #eee;
+            background: #fff;
+        }
+
+        .platform-item:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .platform-item i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .platform-item span {
+            font-size: 0.9em;
+            color: #444;
+            font-weight: 500;
+        }
+
+        /* Platform-specific colors */
+        .fa-facebook {
+            color: #1877f2;
+        }
+
+        .fa-x-twitter {
+            color: #000;
+        }
+
+        .fa-linkedin {
+            color: #0a66c2;
+        }
+
+        .fa-whatsapp {
+            color: #25d366;
+        }
+
+        .fa-telegram {
+            color: #0088cc;
+        }
+
+        .fa-quora {
+            color: #b92b27;
+        }
+
+        .fa-reddit {
+            color: #ff4500;
+        }
+
+        .fa-mastodon {
+            color: #6364ff;
+        }
+
+        .fa-tumblr {
+            color: #35465c;
+        }
+
+        .fa-viber {
+            color: #7360f2;
+        }
+
+        .fa-signal-messenger {
+            color: #1798ff;
+        }
+
+        .fa-weixin {
+            color: #07c160;
+        }
+
+        .fa-threads {
+            color: #000000;
+        }
+
+        .fa-discord {
+            color: #5865f2;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .platforms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .platform-item {
+                padding: 12px;
+            }
+
+            .platform-item i {
+                font-size: 24px;
+            }
+
+            .platform-item span {
+                font-size: 0.8em;
+            }
+        }
+
+
+        /* Menu bar styles */
+        /* Menu bar styles */
+        .menu-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+
+        .menu-icon {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-icon div {
+            width: 100%;
+            height: 4px;
+            background-color: #000;
+            transition: all 0.3s ease;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+        }
+
+        .menu.open {
+            right: 0;
+            opacity: 1;
+        }
+
+        .menu-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .menu-content h2 {
+            margin-top: 0;
+        }
+
+        .menu-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .menu-content ul li {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .menu-content ul li:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        .menu-content ul li a {
+            text-decoration: none;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-content ul li svg {
+            width: 24px;
+            height: 24px;
+            color: #4A5568;
+            margin: 10px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .menu {
+                width: 100%;
+                opacity: 0;
+                transition: 1s;
+            }
+
+            .menu-icon {
+                width: 25px;
+                height: 25px;
+            }
+
+            .menu-icon div {
+                height: 3px;
+            }
+
+            .clock-container {
+                padding: 15px;
+            }
+
+            #time {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 100%;
+                opacity: 0;
+                transition: 1s;
+            }
+
+            .menu-icon {
+                width: 20px;
+                height: 20px;
+                position: relative;
+                top: -12px;
+                left: 10px;
+            }
+
+            .menu-icon div {
+                height: 4px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+            }
+
+            .clock-container {
+                padding: 10px;
+            }
+
+            #time {
+                font-size: 1.2em;
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .clock-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: url('./imgs/Background.jpg') no-repeat center center;
+            background-size: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #time {
+            font-size: 2em;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        #gregorian-date,
+        #hijri-date {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #000;
+            font-weight: bold;
+            background-color: #dadada94;
+            border-radius: 50px;
+        }
+
+        .item {
+            margin-top: 20px;
+        }
+
+        @media (min-width: 640px) {
+            .clock-container {
+                margin-top: 40px;
+                padding: 30px;
+            }
+
+            #time {
+                font-size: 2.5em;
+            }
+
+            #gregorian-date,
+            #hijri-date {
+                font-size: 1.5em;
+            }
+
+            .item {
+                margin-top: 30px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .clock-container {
+                margin-top: 60px;
+                padding: 40px;
+            }
+
+            #time {
+                font-size: 3em;
+            }
+
+            #gregorian-date,
+            #hijri-date {
+                font-size: 1.8em;
+            }
+
+            .item {
+                margin-top: 40px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .clock-container {
+                margin-top: 80px;
+                padding: 50px;
+            }
+
+            #time {
+                font-size: 3.5em;
+            }
+
+            #gregorian-date,
+            #hijri-date {
+                font-size: 2em;
+                font-weight: bolder;
+            }
+
+            .item {
+                margin-top: 50px;
+            }
+
+            .item p {
+                font-size: 1.2em;
+                font-weight: bolder;
+            }
+        }
+    </style>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Onboarding Container */
+        .onboarding-container {
+            width: 100vw;
+            height: 100dvh;
+            /* Dynamic viewport height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        /* Slides Container */
+        .slides-container {
+            display: flex;
+            width: 500vw;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+            touch-action: pan-y;
+            /* Better touch handling */
+        }
+
+        /* Individual Slides */
+        .slide {
+            width: 100vw;
+            height: 100%;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Dots */
+        .progress-dots {
+            position: fixed;
+            top: max(2rem, env(safe-area-inset-top));
+            /* Notch safe */
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+            background: #dadada;
+            padding: 4px;
+            border-radius: 11px;
+            border: 2px solid #67259e;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #8a2be2;
+            transform: scale(1.2);
+        }
+
+        /* Content Styling */
+        .content {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* Image Container */
+        .image-container {
+            width: 100%;
+            max-width: min(280px, 70vw);
+            /* Responsive sizing */
+            margin-bottom: 1.5rem;
+            animation: bounce 1.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            transform: scale(1.2);
+            border-radius: 50%;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            color: #1d1d1f;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.5;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Buttons */
+        .button-container {
+            position: fixed;
+            bottom: max(2rem, env(safe-area-inset-bottom));
+            /* Mobile safe */
+            width: calc(100% - 2rem);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #8a2be2, #5c1b8c);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.8rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .button:hover {
+            background: linear-gradient(45deg, #5c1b8c, #4a0060);
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Icon Styles */
+        .icon-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            padding: 1rem;
+        }
+
+        .icon-container .icon {
+            font-size: 2.2rem;
+            color: #8a2be2;
+            background: linear-gradient(145deg, #fff, #f1f1f1);
+            padding: 1.2rem;
+            border-radius: 15%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: moveIcon 3s infinite ease-in-out;
+        }
+
+        @keyframes moveIcon {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+
+            .slide {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 0.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+                max-width: 90%;
+            }
+
+            .button {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .image-container {
+                max-width: 60vw;
+                margin-bottom: 1rem;
+            }
+
+            .icon-container {
+                gap: 1rem;
+                padding: 0.5rem;
+            }
+
+            .icon-container .icon {
+                font-size: 1.8rem;
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-dots {
+                top: 1rem;
+                transform: scale(0.9);
+            }
+
+            .dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .image-container img {
+                transform: scale(1.1);
+            }
+
+            .button-container {
+                bottom: 1.5rem;
+                width: calc(100% - 1rem);
+            }
+        }
+
+        /* Prevent horizontal scroll */
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div id="indexPage">
+        <div class="menu-bar">
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="menu" id="menu" dir="rtl">
+            <div class="menu-content">
+                <ul>
+                    <li>
+                        <a href="./Menu/About/index.html">
+                            <i class="fas fa-info-circle"></i> حول
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./Menu/feedbackBugreport/index.html">
+                            <i class="fas fa-comment-dots"></i> ملاحظات & الإبلاغ عن الأخطاء
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./Menu/licences(EULA)/index.html">
+                            <i class="fas fa-file-contract"></i> التراخيص (EULA)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./Menu/privacyandpolicy/index.html">
+                            <i class="fas fa-user-shield"></i> الخصوصية والسياسات
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Share Button -->
+                        <a>
+                            <button class="share-button" onclick="openShareModal()">
+                                <i class="fas fa-share-alt"></i> مشاركة
+                            </button>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./Menu/termsandconditions/index.html">
+                            <i class="fas fa-gavel"></i> الأحكام والشروط
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./Menu/Resources/index.html">
+                            <i class="fas fa-book"></i> الموارد
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <!-- Share Modal -->
+        <div class="share-modal" id="shareModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Share via</h3>
+                    <button class="close-btn" onclick="closeShareModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="platforms-grid">
+                    <!-- Core Platforms -->
+                    <div class="platform-item" onclick="shareTo('facebook')">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('whatsapp')">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('twitter')">
+                        <i class="fab fa-x-twitter"></i>
+                        <span>X (Twitter)</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('linkedin')">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('threads')">
+                        <i class="fab fa-threads"></i>
+                        <span>Threads</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('quora')">
+                        <i class="fab fa-quora"></i>
+                        <span>Quora</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('reddit')">
+                        <i class="fab fa-reddit"></i>
+                        <span>Reddit</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('telegram')">
+                        <i class="fab fa-telegram"></i>
+                        <span>Telegram</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('mastodon')">
+                        <i class="fab fa-mastodon"></i>
+                        <span>Mastodon</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('tumblr')">
+                        <i class="fab fa-tumblr"></i>
+                        <span>Tumblr</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('viber')">
+                        <i class="fab fa-viber"></i>
+                        <span>Viber</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('signal')">
+                        <i class="fa-brands fa-signal-messenger"></i>
+                        <span>Signal</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('wechat')">
+                        <i class="fab fa-weixin"></i>
+                        <span>WeChat</span>
+                    </div>
+                    <div class="platform-item" onclick="shareTo('discord')">
+                        <i class="fab fa-discord"></i>
+                        <span>Discord</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-3xl w-full p-4 ">
+
+            <!-- Clock Section -->
+            <div class="clock-container">
+                <h1 id="time">00:00:00 ص</h1>
+                <h2 id="gregorian-date">الأربعاء، 1 يناير 2025</h2>
+                <h2 id="hijri-date">تاريخ هجري غير متوفر</h2>
+            </div>
+
+            <!-- Popular Section -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('Quran/Quran.html')">
+                    <img alt="Quran illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/Quran.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Quran</p>
+                </div>
+                <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('Allah/Allah.html')">
+                    <img alt="Headphones illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/Allah.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Allah</p>
+                </div>
+                <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('Azan/index.html')">
+                    <img alt="Clipboard illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/Azan.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Azan</p>
+                </div>
+                <!-- <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('Columns_and_basic_signs.html')">
+                    <img alt="Tasbih illustration" class="mb-2 w-13 h-13" height="100"
+                        src="./imgs/Columns and basic signs.webp" width="100" />
+                    <p class="text-sm font-bold text-gray-800">Columns and basic signs</p>
+                </div> -->
+                <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('GraetesofIslami/choose.html')">
+                    <img alt="Quran illustration" class="mb-2 w-13 h-13" height="100"
+                        src="./imgs/GreatpeopleofIslam.png" width="100" />
+                    <p class="text-sm font-bold text-gray-800">Great people of Islam</p>
+                </div>
+                <!-- <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('Hadthis.html')">
+                    <img alt="Headphones illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/Hadthis.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Hadthis</p>
+                </div> -->
+                <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('theProphetMuhammad/choose.html')">
+                    <img alt="Clipboard illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/Mohamed.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Mohamed</p>
+                </div>
+                <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('ObligationsandSunnahs/choose.html')">
+                    <img alt="Tasbih illustration" class="mb-2 w-13 h-13" height="100"
+                        src="./imgs/ObligationsandSunnahs.png" width="100" />
+                    <p class="text-sm font-bold text-gray-800">Obligations and Sunnahs</p>
+                </div>
+                <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('azkar/index.html')">
+                    <img alt="Quran illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/remembrance.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Azkar</p>
+                </div>
+                <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('tasbeh/index.html')">
+                    <img alt="Headphones illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/Rosary.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Rosary</p>
+                </div>
+                <!-- <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('#')">
+                    <img alt="Clipboard illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/stories.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">stories</p>
+                </div> -->
+                <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('Dua/index.html')">
+                    <img alt="Tasbih illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/supplications.png"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Duas</p>
+                </div>
+                <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('livestream/Livestream.html')">
+                    <img alt="Tasbih illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/livestram.jpg"
+                        width="100" />
+                    <p class="text-sm font-bold text-gray-800">Live mecca & medina </p>
+                </div>
+                <!-- <div class=" rounded-xl p-4 flex flex-col items-center shadow card item"
+                    onclick="navigateTo('#')">
+                    <img alt="Tasbih illustration" class="mb-2 w-13 h-13" height="100" src="./imgs/ai.jpg" width="100" />
+                    <p class="text-sm font-bold text-gray-800">AI (HelalGPT) </p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="onboarding-container" id="onboarding-container">
+        <div class="progress-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div> <!-- 5 dots for 5 pages -->
+        </div>
+        <div class="slides-container">
+            <!-- Page 1 -->
+            <div class="slide">
+                <div class="content">
+                    <div class="image-container">
+                        <img src="./imgs/UI.jpg" alt="Illustration 1">
+                    </div>
+                    <h1>تصميمات مميزة مصممة خصيصًا للتطبيق</h1>
+                    <p>نحن نقدم تصميمات مصممة بخبرة تعمل على رفع جماليات التطبيق، مما يضمن تجربة مستخدم سلسة وجذابة.
+                    </p>
+                </div>
+            </div>
+            <!-- Page 2 -->
+            <div class="slide">
+                <div class="content">
+                    <div class="image-container">
+                        <img src="./imgs/NOADS.jpg" alt="Illustration 2">
+                    </div>
+                    <h1>تجربة سلسة دائمًا</h1>
+                    <p>ابق على اتصال - استمتع بإمكانية الوصول دون انقطاع بدون إعلانات وبدون رسوم اشتراك.</p>
+                </div>
+            </div>
+            <!-- Page 3 -->
+            <div class="slide">
+                <div class="content">
+                    <div class="image-container">
+                        <img src="./imgs/FEEDBACK.jpg" alt="Illustration 3">
+                    </div>
+                    <h1>صوتك مهم</h1>
+                    <p>نحن هنا لدعمك بأي ملاحظات أو تقارير. مساهماتك تساعدنا على تحسين موسوعة هلال</p>
+                </div>
+            </div>
+            <!-- Page 4 -->
+            <div class="slide">
+                <div class="content">
+                    <div class="image-container">
+                        <img src="./imgs/LICINECESS.jpg" alt="Illustration 1">
+                    </div>
+                    <h1> التراخيص </h1>
+                    <p>
+
+                        التراخيص هي بمثابة قواعد تساعد الجميع على البقاء آمنين والاستمتاع بوقت ممتع. باستخدام خدماتنا،
+                        فإنك توافق على اتباع هذه القواعد، والتي تتضمن سياسة الخصوصية لدينا، والشروط والأحكام، والترخيص.
+
+                    </p>
+
+
+                </div>
+            </div>
+            <!-- Page 5 - Islamic Content -->
+            <div class="slide">
+                <div class="content">
+                    <div class="image-container">
+                        <img src="./imgs/THEPEAREL.jpg" alt="Illustration 1">
+                    </div>
+                    <h1> اكتشف جوهر الإسلام</h1>
+                    <p>اكتشف ميزاتنا الإسلامية - يمكنك الوصول إلى الموارد القيمة، من القرآن الكريم إلى الأدعية، بكل
+                        سهولة ووضوح.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="button-container">
+            <button class="button" id="prevBtn" disabled><i class="fas fa-arrow-left"></i> </button>
+            <button class="button" id="nextBtn"><i class="fas fa-arrow-right"></i> </button>
+        </div>
+    </div>
+    <script>
+
+        function updateClock() {
+            const now = new Date();
+
+            // Format time in Arabic
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const amPm = hours >= 12 ? 'م' : 'ص';
+            const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${amPm}`;
+
+            // Gregorian date in Arabic
+            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', locale: 'ar' };
+            const gregorianDate = now.toLocaleDateString('ar-EG', gregorianOptions);
+
+            // Hijri date in Arabic using moment-hijri
+            const hijriDate = moment(now).format('iD iMMMM iYYYY هـ');
+
+            // Update elements
+            document.getElementById('time').textContent = formattedTime;
+            document.getElementById('gregorian-date').textContent = gregorianDate;
+            document.getElementById('hijri-date').textContent = hijriDate;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Initialize immediately
+
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('menu');
+            const menuIcon = document.querySelector('.menu-icon');
+            if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        const baseURL = 'https://helal-encyclopedia.netlify.app';
+
+        function shareTo(platform) {
+            const encodedURL = encodeURIComponent(baseURL);
+            const platforms = {
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`,
+                whatsapp: `https://api.whatsapp.com/send?text=${encodedURL}`,
+                twitter: `https://twitter.com/intent/tweet?url=${encodedURL}`,
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`,
+                threads: `https://www.threads.net/intent/post?text=${encodedURL}`,
+                quora: `https://www.quora.com/share?url=${encodedURL}`,
+                reddit: `https://reddit.com/submit?url=${encodedURL}`,
+                telegram: `https://t.me/share/url?url=${encodedURL}`,
+                mastodon: `https://mastodon.social/share?text=${encodedURL}`,
+                tumblr: `https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodedURL}`,
+                viber: `viber://forward?text=${encodedURL}`,
+                signal: `https://signal.me/#/?text=${encodedURL}`,
+                wechat: `weixin://dl/chat?${encodedURL}`,
+                discord: `https://discord.com/channels/@me`,
+            };
+
+            window.open(platforms[platform] || baseURL, '_blank');
+        }
+
+        function openShareModal() {
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        const appContainer = document.getElementById("indexPage")
+        const slidesContainer = document.querySelector('.slides-container');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const onboarding_container = document.getElementById('onboarding-container');// added this line
+        let currentSlide = 0;
+
+        // Set default visibility
+        Switich(onboarding_container)
+
+        function updateSlide() {
+            // Adjust the transform value starting from 200vw for the first slide
+            let transformValue = (2 - currentSlide) * 100; // This starts the first slide at 200vw
+            slidesContainer.style.transform = `translateX(${transformValue}vw)`;
+
+            // Update dots
+            dots.forEach((dot, index) => dot.classList.toggle('active', index === currentSlide));
+
+            // Enable/disable buttons
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.innerHTML = currentSlide === dots.length - 1 ? '<i class="fas fa-check"></i> ' : '<i class="fas fa-arrow-right"></i>';
+
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < dots.length - 1) {
+                currentSlide++;
+                updateSlide();
+            } else {
+                localStorage.setItem('onboardingComplete', 'true');
+                alert('Onboarding complete!');
+                Switich(appContainer)
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        // Check if onboarding is completed before
+        if (localStorage.getItem('onboardingComplete')) {
+            Switich(appContainer)
+        }
+
+        updateSlide();
+
+        function Switich(screen) {
+            // disable all screens
+            appContainer.style.display = "none"
+            onboarding_container.style.display = "none"
+            // enable the selected screen
+            screen.style.display = "flex"
+        }
+
+
+    </script>
+</body>
+
+</html>

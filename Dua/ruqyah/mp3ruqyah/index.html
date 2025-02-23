@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../CDNs/fontawesome/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="phone light">
+            <div id="top-menu">
+                <div class="button" onclick="window.location.href='tracks.html'">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+            </div>
+
+            <div class="thumbnail-border">
+                <div class="song-thumbnail" id="song-thumbnail"></div>
+            </div>
+
+            <div id="song-details">
+                <h1 class="song-title" id="song-title">SUMMER</h1>
+                <span class="artist" id="song-artist">Helal-encyclopedia</span>
+            </div>
+
+            <div id="time-slider">
+                <div class="slider-times">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
+                </div>
+                <input type="range" min="0" max="100" value="0" class="slider" id="time-slider-input">
+            </div>
+
+            <div id="song-controls">
+                <div class="button" onclick="skip(-10)">
+                    <i class="fas fa-backward"></i>
+                </div>
+                <div class="button" onclick="playPause()">
+                    <i class="fas fa-play" id="play-pause-icon"></i>
+                </div>
+                <div class="button" onclick="skip(10)">
+                    <i class="fas fa-forward"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <audio id="audio-player" src=""></audio>
+    <script>
+        const audioPlayer = document.getElementById('audio-player');
+        const songThumbnail = document.getElementById('song-thumbnail');
+        const songTitle = document.getElementById('song-title');
+        const songArtist = document.getElementById('song-artist');
+        const currentTime = document.getElementById('current-time');
+        const totalTime = document.getElementById('total-time');
+        const timeSlider = document.getElementById('time-slider-input');
+        const playPauseIcon = document.getElementById('play-pause-icon');
+
+        // Load the selected track from localStorage
+        const track = JSON.parse(localStorage.getItem('selectedTrack'));
+        if (track) {
+            audioPlayer.src = track.src;
+            songThumbnail.style.backgroundImage = `url('${track.image}')`;
+            songTitle.innerText = track.title;
+        }
+
+        // Update the total time when the audio metadata is loaded
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            totalTime.innerText = formatTime(audioPlayer.duration);
+        });
+
+        // Update the current time and slider as the audio plays
+        audioPlayer.addEventListener('timeupdate', () => {
+            currentTime.innerText = formatTime(audioPlayer.currentTime);
+            timeSlider.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        });
+
+        // Allow seeking by dragging the slider
+        timeSlider.addEventListener('input', () => {
+            audioPlayer.currentTime = (timeSlider.value / 100) * audioPlayer.duration;
+        });
+
+        // Play/Pause functionality
+        function playPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+            } else {
+                audioPlayer.pause();
+                playPauseIcon.classList.remove('fa-pause');
+                playPauseIcon.classList.add('fa-play');
+            }
+        }
+
+        // Skip forward or backward
+        function skip(seconds) {
+            audioPlayer.currentTime += seconds;
+        }
+
+        // Format time in minutes:seconds
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        audioPlayer.play().then(() => {
+            playPauseIcon.classList.remove('fa-play');
+            playPauseIcon.classList.add('fa-pause');
+        }).catch((error) => {
+            console.error("Autoplay failed:", error);
+            // Show a play button or message to the user
+            alert("  انقر على أيقونة الإغلاق ثم انقر على أيقونة البدء لبدء التشغيل");
+        });
+
+
+        // alert.js
+        (function () {
+            // Inject required Font Awesome CSS
+            const faLink = document.createElement('link');
+            faLink.rel = 'stylesheet';
+            document.head.appendChild(faLink);
+
+            // Inject custom styles
+            const style = document.createElement('style');
+            style.textContent = `
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .custom-alert {
+            position: relative;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-left: 5px solid #6a5acd;
+        }
+        
+        .alert-content {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .alert-message {
+          font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+               position: absolute;
+               left:5%;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #6a5acd;
+            width: 100%;
+            transition: width 0.1s linear;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6a5acd;
+            font-size: 18px;
+        }
+    `;
+            document.head.appendChild(style);
+
+            // Override default alert
+            window.alert = (message, options = {}) => {
+                const existingAlert = document.querySelector('.custom-alert-overlay');
+                if (existingAlert) return;
+
+                // Default options
+                const config = {
+                    timeout: 10000,
+                    ...options
+                };
+
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.className = 'custom-alert-overlay';
+
+                // Create alert container
+                const alert = document.createElement('div');
+                alert.className = 'custom-alert';
+
+                // Alert content
+                alert.innerHTML = `
+            <button class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="alert-content">
+                
+                <div class="alert-message">${message}</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        `;
+
+                // Progress animation
+                const progress = alert.querySelector('.progress');
+                const startTime = Date.now();
+
+                const updateProgress = () => {
+                    const elapsed = Date.now() - startTime;
+                    const remaining = config.timeout - elapsed;
+                    progress.style.width = `${(remaining / config.timeout) * 100}%`;
+
+                    if (remaining > 0) {
+                        requestAnimationFrame(updateProgress);
+                    }
+                };
+                requestAnimationFrame(updateProgress);
+
+                // Close functionality
+                const closeAlert = () => {
+                    overlay.remove();
+                    alert.remove();
+                };
+
+                alert.querySelector('.close-btn').addEventListener('click', closeAlert);
+
+                // Auto-close
+                setTimeout(closeAlert, config.timeout);
+
+                // Append elements
+                overlay.appendChild(alert);
+                document.body.appendChild(overlay);
+            };
+        })();
+
+    </script>
+    <script src="../../../CDNs/fontawesome/js/all.min.js"></script>
+</body>
+
+</html>

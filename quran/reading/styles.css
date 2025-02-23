@@ -1,0 +1,305 @@
+/* Basic Layout */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  direction: rtl;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  background-color: #6a5acd;
+  color: white;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1{
+  position: relative;
+  top: -30px;
+  left: -89px;
+}
+
+.back-button {
+  background-color: #ffffff;
+  border: none;
+  color: #6a5acd;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  left: 8px;
+  top: 15px;
+}
+
+/* Container Layout */
+.container {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  width: 88%;
+  padding: 10px;
+  border: 5px solid #ffffff;
+  border-radius: 16px;
+  position: fixed;
+  top: 58px;
+  left: 7px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Surah List */
+.surah-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.surah-item {
+  width: 93%;
+  padding: 15px;
+  background-color: #ffffff;
+  color: #6a5acd;
+  border: 2px solid #6a5acd;
+  border-radius: 8px;
+  text-align: right;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+  position: relative;
+  margin-bottom: 23px;
+  word-break: break-word; /* Prevents text overflow */
+}
+
+.surah-item:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+.surah-item .surah-number {
+  font-size: 15px;
+  color: #333;
+  margin-left: 10px;
+  border-radius: 50%;
+  padding: 5px 10px;
+  position: absolute;
+  top: 19px;
+  left: 9px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.img-num-border {
+  width: 50px;
+  position: absolute;
+  left: 14.5px;
+  top: 8px;
+  transform: scale(1.1);
+}
+/* Ensure all text is aligned correctly */
+.surah-item .surah-name {
+  font-size: 20px;
+  color: #6a5acd;
+}
+
+
+.surah-item .surah-details {
+  font-size: 14px;
+  color: #333;
+  margin-top: 5px;
+}
+
+/* Quran Page */
+.quran-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Bismillah Positioning Fix */
+.bismillah {
+  font-size: 28px;
+  margin: 20px 0;
+  color: #6a5acd;
+  font-weight: bold;
+  position: relative;
+  top: 0; /* Make sure it's placed directly below the header */
+  left: 0;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.ayah-container {
+  font-size: 24px;
+  line-height: 2;
+  color: #333;
+  text-align: right;
+}
+
+#loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Ensure it's above other elements */
+}
+
+#surahContent div {
+  font-size: 25px;
+}
+
+/* Toggle Button inside Surah Page */
+.toggle-button {
+  background-color: #fff;
+  border: none;
+  color: #6a5acd;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 10px;
+  margin-right: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+}
+
+.toggle-button:hover {
+  background-color: #d8bfd8;
+  transform: scale(1.05);
+}
+
+/* Ayah Block */
+.ayah-block {
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.ayah-block:hover {
+  transform: translateY(-3px);
+}
+
+/* Highlighted First Verse */
+.highlighted {
+  border: 2px solid #6a5acd;
+  background-color: #f3f3f3;
+}
+
+/* Ayah Text */
+.ayah-text {
+  font-size: 22px;
+  color: #4b0082;
+  font-weight: bold;
+  text-align: right;
+}
+
+.ayah-translation {
+  font-size: 18px;
+  color: #333;
+  text-align: right;
+  margin-top: 8px;
+}
+
+/* Arabic translation in Blue-Violet */
+.ayah-translation-arabic {
+  font-size: 18px;
+  color: #6a5acd; /* Blue-Violet */
+  text-align: right;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Copy Button */
+.copy-button {
+  background-color: #6a5acd;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.copy-button:hover {
+  background-color: #4b0082;
+  transform: scale(1.05);
+}
+
+/* Full Surah Mode */
+.full-surah {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-surah-text, .full-surah-translation {
+  font-size: 22px;
+  color: #4b0082;
+  font-weight: bold;
+  text-align: right;
+  line-height: 1.8;
+  word-break: break-word; /* Ensure no text overflow */
+}
+
+.full-surah-translation {
+  font-size: 18px;
+  color: #333;
+  text-align: right;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.full-surah {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-surah p {
+  order: 1;
+}
+
+.full-surah div {
+  order: 0;
+}

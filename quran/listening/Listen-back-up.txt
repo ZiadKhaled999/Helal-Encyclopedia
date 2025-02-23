@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Readers</title>
+  <script src="./CDNs/tailwindcsscdn.js" ></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+  <header class="sticky top-0 bg-green-600 text-white shadow-md p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-4">
+      <input type="text" id="readerSearch" placeholder="بحث عن القارئ" class="p-2 rounded-lg w-64" oninput="filterReaders()">
+      <input type="text" id="surahSearch" placeholder="بحث عن السورة" class="p-2 rounded-lg w-64 hidden" oninput="filterSurahs()">
+    </div>
+    <button class="bg-white text-green-600 p-2 rounded-lg shadow-md" onclick="showReaders()"><i class="fas fa-arrow-left"></i></button>
+  </header>
+
+  <div id="readerList" class="flex flex-wrap justify-center p-4"></div>
+  <div id="surahList" class="flex flex-wrap justify-center p-4 hidden"></div>
+
+  <script>
+    let quranReaders = [];
+    let currentReaderIndex = -1;
+    let currentSurahIndex = 0;
+    let isPlaying = false;
+
+    fetch('./JSON/readers.json')
+      .then(response => response.json())
+      .then(data => {
+        quranReaders = data;
+        showReaders();
+      })
+      .catch(error => console.error('Error loading JSON data:', error));
+
+    function showReaders() {
+      document.getElementById('surahList').classList.add('hidden');
+      document.getElementById('readerList').classList.remove('hidden');
+      document.getElementById('surahSearch').classList.add('hidden');
+      document.getElementById('readerSearch').classList.remove('hidden');
+
+      let readerList = document.getElementById('readerList');
+      readerList.innerHTML = '';
+
+      quranReaders.forEach((reader, index) => {
+        let readerDiv = document.createElement('div');
+        readerDiv.classList.add('relative', 'bg-white', 'p-4', 'm-2', 'rounded-lg', 'shadow-md', 'w-48', 'text-center', 'cursor-pointer');
+        readerDiv.innerHTML = `
+          <div class="absolute top-0 left-0 bg-green-500 text-white p-1 rounded-br-lg">${reader.rewaya}</div>
+          <div class="text-lg font-bold">${reader.name}</div>
+        `;
+        readerDiv.onclick = () => showSurahs(index);
+        readerList.appendChild(readerDiv);
+      });
+    }
+
+    function showSurahs(readerIndex) {
+      document.getElementById('readerList').classList.add('hidden');
+      document.getElementById('surahList').classList.remove('hidden');
+      document.getElementById('surahSearch').classList.remove('hidden');
+      document.getElementById('readerSearch').classList.add('hidden');
+
+      let surahList = document.getElementById('surahList');
+      surahList.innerHTML = '';
+      let reader = quranReaders[readerIndex];
+      let baseUrl = reader.Server;
+      let suras = reader.suras.split(',');
+      currentReaderIndex = readerIndex;
+
+      const surahNames = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", " يوسف", "الرعد", "ابراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "المؤمنون", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", " الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الانسان", "المرسلات", "النجم", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "طارق", " الأعلى", "الغاشية", "الفجر", "البلد", " الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
+
+      suras.forEach(surahNumber => {
+        let formattedSurahNumber = surahNumber.trim().padStart(3, '0');
+        let surahDiv = document.createElement('div');
+        surahDiv.classList.add('relative', 'bg-white', 'p-4', 'm-2', 'rounded-lg', 'shadow-md', 'w-48', 'text-center', 'cursor-pointer');
+        surahDiv.innerHTML = `
+          <div class="text-lg font-bold">${surahNames[parseInt(surahNumber) - 1]}</div>
+          <audio class="hidden" id="audio-${formattedSurahNumber}" src="${baseUrl}/${formattedSurahNumber}.mp3"></audio>
+        `;
+        surahDiv.onclick = () => togglePlayPause(formattedSurahNumber);
+        surahList.appendChild(surahDiv);
+      });
+    }
+
+    function filterReaders() {
+      let searchTerm = document.getElementById('readerSearch').value.toLowerCase();
+      let readerDivs = document.querySelectorAll('#readerList > div');
+
+      readerDivs.forEach(div => {
+        let readerName = div.querySelector('div.text-lg').innerText.toLowerCase();
+        div.style.display = readerName.includes(searchTerm) ? 'block' : 'none';
+      });
+    }
+
+    function filterSurahs() {
+      let searchTerm = document.getElementById('surahSearch').value.toLowerCase();
+      let surahDivs = document.querySelectorAll('#surahList > div');
+
+      surahDivs.forEach(div => {
+        let surahName = div.querySelector('div.text-lg').innerText.toLowerCase();
+        div.style.display = surahName.includes(searchTerm) ? 'block' : 'none';
+      });
+    }
+
+    function togglePlayPause(surahNumber) {
+      const audio = document.getElementById(`audio-${surahNumber}`);
+      if (isPlaying) {
+        document.querySelectorAll('audio').forEach(a => a.pause());
+        if (audio !== document.querySelector('audio.playing')) {
+          audio.play();
+          audio.classList.add('playing');
+        } else {
+          audio.classList.remove('playing');
+        }
+      } else {
+        audio.play();
+        audio.classList.add('playing');
+      }
+      isPlaying = !isPlaying;
+    }
+  </script>
+</body>
+
+</html>

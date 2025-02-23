@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بث مباشر من الحرمين الشريفين</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Amiri', serif;
+        }
+
+        body {
+            background: #f7f3e9;
+            color: #333;
+            text-align: center;
+        }
+
+        header {
+            background: linear-gradient(135deg, #8A2BE2, #4B0082);
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+        }
+
+        .container {
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .streams-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .stream-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stream-card:hover {
+            transform: scale(1.02);
+        }
+
+        .stream-card img {
+            width: 120px;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #8A2BE2;
+        }
+
+        .stream-card::after {
+            content: "إنه يعمل فقط في أوقات الصلاة";
+            position: absolute;
+            background: #8230d2d4;
+            top: 193px;
+            font-weight: 900;
+            color: white;
+            padding: 4px;
+            border-radius: 8px;
+            left: 49%;
+
+        }
+        .stream-card::before{
+            content: "";
+            position: absolute;
+            background: #8230d2d4;
+            top: 207px;
+            font-weight: 900;
+            padding: 4px;
+            left: 50%;
+            transform: rotate(50deg);
+            width: 10px;
+            height: 10px;
+
+        }
+
+        .stream-info {
+            text-align: right;
+            flex: 1;
+        }
+
+        .stream-info h2 {
+            font-size: 1.5rem;
+            color: #4B0082;
+            margin-bottom: 0.5rem;
+        }
+
+        .stream-info p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: absolute;
+            top: 25%;
+        }
+
+        .modal-content iframe {
+            width: 100%;
+            height: 300px;
+        }
+
+        .close-btn {
+            background: #7402a1;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            display: block;
+            margin: 1rem auto;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #6200ff;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .stream-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stream-card img {
+                width: 100px;
+                height: 80px;
+            }
+
+            .stream-info h2 {
+                font-size: 1.3rem;
+            }
+
+            .stream-info p {
+                font-size: 0.9rem;
+            }
+
+            .modal-content iframe {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>بث مباشر من الحرمين الشريفين</h1>
+        <p>شاهد البث المباشر من المسجد الحرام والمسجد النبوي بكل سهولة</p>
+    </header>
+
+    <div class="container">
+        <div class="streams-container">
+            <div class="stream-card" onclick="openStream('makkah')">
+                <img src="../imgs/macka.jpg" alt="مكة">
+                <div class="stream-info">
+                    <h2>البث المباشر من مكة المكرمة</h2>
+                    <p>شاهد أجواء المسجد الحرام مباشرة</p>
+                </div>
+            </div>
+            <div class="stream-card" onclick="openStream('madina')">
+                <img src="../imgs/madena.jpg" alt="المدينة">
+                <div class="stream-info">
+                    <h2>البث المباشر من المدينة المنورة</h2>
+                    <p>شاهد أجواء المسجد النبوي مباشرة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="streamModal" class="modal">
+        <div class="modal-content">
+            <iframe id="streamFrame" allowfullscreen></iframe>
+            <button class="close-btn" onclick="closeStream()">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        function openStream(city) {
+            const streams = {
+                makkah: 'https://www.youtube.com/embed/y7w4LryLu2Y',
+                madina: 'https://www.youtube.com/embed/NfEglaLYDwc'
+            };
+
+            document.getElementById('streamFrame').src = streams[city];
+            document.getElementById('streamModal').style.display = 'block';
+        }
+
+        function closeStream() {
+            const modal = document.getElementById('streamModal');
+            const frame = document.getElementById('streamFrame');
+            modal.style.display = 'none';
+            frame.src = '';
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('streamModal');
+            if (event.target === modal) closeStream();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helal Encyclopedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #3a2c79;
+            background-color: #f9f9ff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #5e4bbf;
+            position: relative;
+            display: inline-block;
+        }
+
+        section h2::after {
+            content: '';
+            width: 50%;
+            height: 3px;
+            background: #6c63ff;
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        section p {
+            font-size: 1.1rem;
+            margin: 0 auto;
+            max-width: 800px;
+            color: #555;
+        }
+
+        .illustration {
+            max-width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: #fff;
+            border: 2px solid #5e4bbf;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 80%;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature h3 {
+            color: #3a2c79;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature p {
+            color: #777;
+        }
+
+        .feature img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        footer {
+            background: #3a2c79;
+            color: #fff;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: #f9f9ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home">
+            <h2>مرحباً بكم في موسوعة هلال</h2>
+            <p>استكشف وتعلم وتطور مع المورد الإسلامي الشامل المصمم خصيصًا لتعزيز رحلتك الروحية.
+            </p>
+
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+            <h2>مميزاتنا</h2>
+            <div class="features">
+                <!-- Quran -->
+                <div class="feature">
+
+                    <h3>القرآن الكريم</h3>
+                    <p>الوصول إلى القرآن الكريم مع التلاوات.</p>
+                </div>
+                <!-- Allah's Names -->
+                <div class="feature">
+
+                    <h3>أسماء الله الحسنى</h3>
+                    <p>
+                        تعرف على أسماء الله الحسنى الـ 99 (الأسماء الحسنى).</p>
+                </div>
+                <!-- Duas -->
+                <div class="feature">
+
+                    <h3>ادعية</h3>
+                    <p>ابحث عن ادعية قوية لكل مناسبة.</p>
+                </div>
+                <!-- Great People of Islam -->
+                <div class="feature">
+
+                    <h3>عظماء الاسلام</h3>
+                    <p>تعرف على الشخصيات العظيمة في التاريخ الإسلامي.</p>
+                </div>
+                <!-- Tasbeeh -->
+                <div class="feature">
+
+                    <h3>تسبيحة</h3>
+                    <p>قم بتعزيز ذكر الله لديك باستخدام أدوات موجهة.</p>
+                </div>
+                <!-- Adhkar -->
+                <div class="feature">
+
+                    <h3>أذكار</h3>
+                    <p>أذكار يومية لتقوية الإيمان.</p>
+                </div>
+                <!-- Azan Times -->
+                <div class="feature">
+
+                    <h3>أوقات الأذان</h3>
+                    <p>احصل على تحديثات دقيقة لأوقات الصلاة.</p>
+                </div>
+                <!-- Columns and Basic Signs of Islam -->
+                <div class="feature">
+
+                    <h3>الأعمدة والعلامات</h3>
+                    <p>تعرف على أركان الإسلام وعلاماته الأساسية.</p>
+                </div>
+                <!-- Obligations and Sunnahs -->
+                <div class="feature">
+
+                    <h3>الواجبات والسنن</h3>
+                    <p>فهم الواجبات والمستحبات في الإسلام.</p>
+                </div>
+                <!-- Prophet Muhammad -->
+                <div class="feature">
+
+                    <h3>النبي محمد</h3>
+                    <p>تعرف على حياة وتعاليم النبي محمد (صلى الله عليه وسلم).</p>
+                </div>
+                <!-- Stories -->
+                <!-- v class="feature">
+
+                    <h3>قصص</h3>
+                    <p>قصص ملهمة عن الأنبياء والتاريخ الإسلامي وغيرها.</p>
+                </div>
+            </div> -->
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>اتصل بنا</h2>
+            <p>هل لديك أسئلة أو اقتراحات؟ تواصل معنا على <a href="mailto: albhyrytwamrwhybusiness@gmail.com" style="
+                font-size: 14px;
+            ">albhyrytwamrwhybusiness@gmail.com</a>.</p>
+
+        </section>
+    </div>
+
+
+</body>
+
+</html>

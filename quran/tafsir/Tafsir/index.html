@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" style="
+overflow-x: hidden;
+">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفسير القرآن الكريم</title>
+  <script src="../../../CDNs/tailwindcsscdn.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../CDNs/fontawesome/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      /*font-family: 'Amiri', serif;*/
+    }
+
+    .arabic-text {
+      font-size: 1.6rem;
+      line-height: 3rem;
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
+
+    select {
+      padding: 1rem 1.25rem;
+      border-radius: 0.75rem;
+      border: 2px solid #e2e8f0;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+    }
+
+    select:focus {
+      border-color: #6a5acd;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    button {
+      transition: all 0.2s ease;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .form-label {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+      color: #2d3748;
+    }
+
+    .result-box {
+      background: rgba(249, 250, 251, 0.95);
+      backdrop-filter: blur(4px);
+    }
+
+    .header {
+      background: #6a5acd;
+      position: relative;
+      top: -32px;
+      width: 130%;
+      left: 40px;
+      padding-bottom: 3px;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      color: white;
+    }
+
+    #showResultsBtn {
+      background:#6a5acd
+    }
+
+    #surahSelect,
+    #ayahSelect,
+    #tafsirTypeSelect{
+      padding: 10px;
+      border: 4px solid #6a5acd;
+      border-radius: 15px;
+    }
+    .dryt{
+      color: #000;
+    background:#695acdbd
+    padding: 2px;
+    border-radius: 7px;
+    }
+    #tafsirText,
+    #ayahContext{
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body style="margin-right: 0px;overflow-x: hidden;">
+  <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
+    <div class="header">
+      <h1 class="text-3xl font-bold text-center text-white-800 mb-8">تفسير القرآن الكريم</h1>
+    </div>
+
+    <!-- Surah Selection -->
+    <div class="mb-6">
+      <label for="surahSelect" class="form-label">اختر السورة</label>
+      <select id="surahSelect" class="w-full">
+        <option value="" disabled selected>اختر سورة</option>
+      </select>
+    </div>
+
+    <!-- Ayah Selection -->
+    <div class="mb-6">
+      <label for="ayahSelect" class="form-label">اختر الآية</label>
+      <select id="ayahSelect" class="w-full" disabled>
+        <option value="" disabled selected>اختر آية</option>
+      </select>
+    </div>
+
+    <!-- Tafsir Type Selection -->
+    <div class="mb-8">
+      <label for="tafsirTypeSelect" class="form-label">اختر نوع التفسير</label>
+      <select id="tafsirTypeSelect" class="w-full">
+        <option value="" disabled selected>اختر نوع التفسير</option>
+        <option value="ar.baghawi">تفسير البغوي</option>
+        <option value="ar.jalalayn">تفسير الجلالين</option>
+        <option value="ar.qurtubi">تفسير القرطبي</option>
+        <option value="ar.saddi">تفسير السعدي</option>
+        <option value="ar.waseet">التفسير الوسيط</option>
+        <option value="ar.tanweer">التفسير التنوير</option>
+        <option value="ar.muyassar">التفسير المیسر</option>
+      </select>
+    </div>
+
+    <!-- Show Results Button -->
+    <button id="showResultsBtn"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl shadow-lg text-xl">
+      عرض التفسير
+    </button>
+
+    <!-- Results Section -->
+    <div id="results" class="mt-8 hidden">
+      <div class="result-box p-6 rounded-xl shadow-md">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3 dryt">الآية المختارة</h2>
+        <p id="ayahContext" class="arabic-text text-gray-700 mb-6 leading-relaxed"></p>
+        <h2 class="text-xl font-semibold text-gray-800 mt-5 mb-3 dryt">التفسير</h2>
+        <p id="tafsirText" class="arabic-text text-gray-700 leading-relaxed"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let Quran = null;
+    let Tafsir = null;
+
+    // DOM Elements
+    const surahSelect = document.getElementById("surahSelect");
+    const ayahSelect = document.getElementById("ayahSelect");
+    const tafsirTypeSelect = document.getElementById("tafsirTypeSelect");
+    const showResultsBtn = document.getElementById("showResultsBtn");
+    const results = document.getElementById("results");
+    const ayahContext = document.getElementById("ayahContext");
+    const tafsirText = document.getElementById("tafsirText");
+
+    // Fetch Quran Data
+    fetch('Quran.json')
+      .then(response => response.json())
+      .then(data => {
+        Quran = data;
+        Quran.forEach(surah => {
+          const option = document.createElement("option");
+          option.value = surah.Number;
+          option.textContent = `${surah.Number}. ${surah.Name}`;
+          surahSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error loading Quran data:', error));
+
+    // Fetch Tafsir Data
+    tafsirTypeSelect.addEventListener("change", () => {
+      const tafsirType = tafsirTypeSelect.value;
+      if (!tafsirType) return;
+
+      fetch(`${tafsirType}.json`)
+        .then(response => response.json())
+        .then(data => Tafsir = data)
+        .catch(error => console.error(`Error loading Tafsir:`, error));
+    });
+
+    // Populate Ayahs
+    surahSelect.addEventListener("change", () => {
+      ayahSelect.innerHTML = '<option value="" disabled selected>اختر آية</option>';
+      const selectedSurah = Quran.find(s => s.Number == surahSelect.value);
+      for (let i = 1; i <= selectedSurah.Number_Verses; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `الآية ${i}`;
+        ayahSelect.appendChild(option);
+      }
+      ayahSelect.disabled = false;
+    });
+
+    // Main Display Function
+    function displayTafsir() {
+      const surahNumber = parseInt(surahSelect.value);
+      const ayahNumber = parseInt(ayahSelect.value);
+
+      if (!surahNumber || !ayahNumber || !Tafsir) {
+        alert("الرجاء اختيار السورة والآية ونوع التفسير!");
+        return;
+      }
+
+      try {
+        const surahIndex = surahNumber - 1;
+        const ayahIndex = ayahNumber - 1;
+        const selectedSurah = Quran.find(s => s.Number === surahNumber);
+
+        ayahContext.innerHTML = selectedSurah.Array_Verses[0][ayahIndex].ar;
+        tafsirText.innerHTML = Tafsir.tafsir[surahIndex][ayahIndex] || "التفسير غير متوفر";
+        results.classList.remove("hidden");
+      } catch (error) {
+        alert(`حدث خطأ: ${error.message}`);
+        console.error('Error details:', error);
+      }
+    }
+
+    // Event Listeners
+    showResultsBtn.addEventListener("click", displayTafsir);
+
+
+    ////////////////////////
+
+    
+
+////////////////////////
+
+// alert.js
+(function() {
+  // Inject required Font Awesome CSS
+  const faLink = document.createElement('link');
+  faLink.rel = 'stylesheet';
+   faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+  document.head.appendChild(faLink);
+
+  // Inject custom styles
+  const style = document.createElement('style');
+  style.textContent = `
+      .custom-alert-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0,0,0,0.5);
+          z-index: 1100;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      
+      .custom-alert {
+          position: relative;
+          background: #ffffff;
+          padding: 25px;
+          border-radius: 12px;
+          width: 90%;
+          max-width: 500px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+          border-left: 5px solid #6a5acd;
+      }
+      
+      .alert-content {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+      }
+      
+      .alert-message {
+          font-size: 16px;
+          color: #333;
+          line-height: 1.5;
+             position: absolute;
+             left:0;
+      }
+      
+      .progress-bar {
+          height: 4px;
+          background: #eee;
+          border-radius: 2px;
+          overflow: hidden;
+      }
+      
+      .progress {
+          height: 100%;
+          background: #6a5acd;
+          width: 100%;
+          transition: width 0.1s linear;
+      }
+      
+      .close-btn {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #6a5acd;
+          font-size: 18px;
+      }
+  `;
+  document.head.appendChild(style);
+
+  // Override default alert
+  window.alert = (message, options = {}) => {
+      const existingAlert = document.querySelector('.custom-alert-overlay');
+      if (existingAlert) return;
+
+      // Default options
+      const config = {
+          timeout:10000,
+          ...options
+      };
+
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'custom-alert-overlay';
+
+      // Create alert container
+      const alert = document.createElement('div');
+      alert.className = 'custom-alert';
+
+      // Alert content
+      alert.innerHTML = `
+          <button class="close-btn">
+              <i class="fas fa-times"></i>
+          </button>
+          <div class="alert-content">
+              
+              <div class="alert-message">${message}</div>
+          </div>
+          <div class="progress-bar">
+              <div class="progress"></div>
+          </div>
+      `;
+
+      // Progress animation
+      const progress = alert.querySelector('.progress');
+      const startTime = Date.now();
+      
+      const updateProgress = () => {
+          const elapsed = Date.now() - startTime;
+          const remaining = config.timeout - elapsed;
+          progress.style.width = `${(remaining / config.timeout) * 100}%`;
+          
+          if (remaining > 0) {
+              requestAnimationFrame(updateProgress);
+          }
+      };
+      requestAnimationFrame(updateProgress);
+
+      // Close functionality
+      const closeAlert = () => {
+          overlay.remove();
+          alert.remove();
+      };
+
+      alert.querySelector('.close-btn').addEventListener('click', closeAlert);
+      
+      // Auto-close
+      setTimeout(closeAlert, config.timeout);
+
+      // Append elements
+      overlay.appendChild(alert);
+      document.body.appendChild(overlay);
+  };
+})();
+
+  </script>
+  <script src="../../../CDNs/fontawesome/js/all.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسبيح</title>
+    <script src="../CDNs/tailwindcsscdn.js"></script>
+    <style>
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #6a5acd;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            transform: rotate(270deg);
+        }
+
+        .back-button:hover {
+            background-color: #e5e7eb;
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-screen relative">
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.history.back()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11.414V14a1 1 0 11-2 0V6.586L6.707 9.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 6.586z"
+                clip-rule="evenodd" />
+        </svg>
+    </button>
+
+    <div class="container bg-white rounded-3xl w-full p-4">
+        <!-- Tasbeh Card 1 -->
+        <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+            onclick="navigateTo('tasbeh.html')">
+            <img src="../imgs/illustrations/tasbeh/tasbeh1.jpg" alt="Tasbeh 1" class="w-17 h-16 mb-2">
+            <p class="text-sm font-bold text-gray-800">السبحة الأولى</p>
+            <p class="text-gray-600">التسبيح الأول .</p>
+        </div>
+
+        <!-- Tasbeh Card 2 -->
+        <div class="rounded-xl p-4 flex flex-col items-center shadow card item mt-6"
+            onclick="navigateTo('tasbeh2/index.html')">
+            <img src="../imgs/illustrations/tasbeh/tasbeh2.jpg" alt="Tasbeh 2" class="w-17 h-16 mb-2">
+            <p class="text-sm font-bold text-gray-800">السبحة الثانية</p>
+            <p class="text-gray-600">التسبيح المتقدم.</p>
+        </div>
+    </div>
+
+
+    <script>
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+    </script>
+</body>
+
+</html>

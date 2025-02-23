@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #6a5acd;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #e5e7eb;
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .card {
+            border:  solid #e5e7eb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .card .title {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .card .description {
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="back-button" onclick="window.history.back()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11.414V14a1 1 0 11-2 0V6.586L6.707 9.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 6.586z"
+                clip-rule="evenodd" />
+        </svg>
+    </button>
+
+    <div class="container">
+        <!-- Azkar Section 1 -->
+        <div class="card" onclick="window.location.href='index.html'">
+            <img src="../imgs/illustrations/greatpeopleofIslam/100.jpg" alt="Basic Azkar">
+            <p class="title"> شخصيات عظيمة في الإسلام</p>
+            
+        </div>
+
+        <!-- Azkar Section 2 -->
+        <div class="card" onclick="window.location.href='mindex.html'">
+            <img src="../imgs/illustrations/greatpeopleofIslam/Andalusia.webp" alt="Daily Azkar">
+            <p class="title">المسلمين في الأندالوس </p>
+           
+        </div>
+    </div>
+</body>
+
+</html>

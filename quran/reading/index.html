@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قراءة القرآن</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Main Page -->
+  <div class="main-page" id="mainPage">
+    <header class="header">
+      <button class="back-button" onclick="goBack()">&#8592; عودة</button>
+      <h1>قراءة القرآن</h1>
+      <button id="toggleDisplay" class="toggle-button" onclick="toggleDisplayMode()">🔍 عرض آية بآية</button>
+    </header>
+    
+    
+    <div class="container">
+      <div class="sidebar">
+        <div class="search-container">
+          <input type="text" id="searchBar" placeholder="ابحث هنا عن السورة" onkeyup="searchSurah()" class="search-bar">
+        </div>
+        <div class="surah-list" id="surahList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quran Page -->
+  <div class="quran-page" id="quranPage" style="display: none;">
+    <header class="header">
+      <button class="back-button" onclick="goBack()">&#8592; عودة</button>
+      <h1>قراءة القرآن</h1>
+    </header>
+    <div class="content">
+      <div id="surahContent"></div>
+    </div>
+  </div>
+
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>

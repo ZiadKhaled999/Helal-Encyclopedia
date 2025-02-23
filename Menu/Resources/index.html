@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halal Encyclopedia - Resources</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../CDNs/fontawesome/css/all.min.css">
+  <style>
+    /* Modern Color Scheme */
+    :root {
+      --primary: linear-gradient(45deg, #6366f1, #8b5cf6);
+      --secondary: #8b5cf6;
+      --accent: #6366f1;
+      --text: #2D2D2D;
+      --background: #F8F9FF;
+      --non-primary: #6366f1;
+    }
+
+    /* Base Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 0;
+    }
+
+    /* Resources Section */
+    #resources h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--non-primary);
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    #resources h2:after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: var(--secondary);
+      margin: 1rem auto 0;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    .resource-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px rgb(15 0 255 / 30%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transform: translateX(-20px);
+    }
+
+    .resource-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(108, 99, 255, 0.12);
+    }
+
+    .resource-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .resource-icon {
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .resource-card:hover .resource-icon {
+      transform: scale(1.1);
+    }
+
+    .resource-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--non-primary);
+    }
+
+    .reference-link {
+      display: block;
+      background: rgba(108, 99, 255, 0.08);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      word-break: break-all;
+      transition: background 0.3s ease;
+    }
+
+    .reference-link a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .reference-link:hover {
+      background: rgba(108, 99, 255, 0.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--secondary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn i {
+      font-size: 1.1rem;
+    }
+
+    .btn:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <section id="resources">
+    <div class="container">
+      <h2>المصادر الاسلامية</h2>
+      <div class="resource-grid">
+        <!-- Quran -->
+        <div class="resource-card">
+          <i class="fas fa-book-open resource-icon"></i>
+          <h3>القرآن الكريم</h3>
+          <div class="reference-link">
+            <a href="https://github.com/rn0x/Quran-Json" target="_blank">
+              https://github.com/rn0x/Quran-Json
+            </a>
+          </div>
+          <div class="reference-link">
+            <a href="https://www.mp3quran.net/api/_arabic.json" target="_blank">
+              https://www.mp3quran.net/api/_arabic.json
+            </a>
+          </div>
+          
+        </div>
+
+        <!-- Allah Names -->
+        <div class="resource-card">
+          <i class="fas fa-pray resource-icon"></i>
+          <h3>99 اسما من أسماء الله الحسنى</h3>
+          <div class="reference-link">
+            <a href="https://github.com/rn0x/Names_Of_Allah_Json/blob/main/Names_Of_Allah.json" target="_blank">
+              https://github.com/rn0x/Names_Of_Allah_Json/blob/main/Names_Of_Allah.json
+            </a>
+          </div>
+         
+        </div>
+
+        <!-- Dua -->
+        <div class="resource-card">
+          <i class="fas fa-hands-praying resource-icon"></i>
+          <h3>أدعية يومية</h3>
+          <div class="reference-link">
+            <a href="https://t.co/6ZPfHi50Tz?com.walid.maktbti" target="_blank">
+              https://t.co/6ZPfHi50Tz?com.walid.maktbti
+            </a>
+          </div><div class="reference-link">
+            <a href="dev-nassima.en.aptoide.com/" target="_blank">
+              dev-nassima.en.aptoide.com/
+            </a>
+          </div>
+         
+        </div>
+
+        <!-- Great People of Islam -->
+        <div class="resource-card">
+          <i class="fas fa-users resource-icon"></i>
+          <h3>عظماء الاسلام</h3>
+          <div class="reference-link">
+            <a href="https://t.co/6ZPfHi50Tz?com.walid.maktbti" target="_blank">
+              https://t.co/6ZPfHi50Tz?com.walid.maktbti
+            </a>
+          </div>
+          
+        </div>
+
+        <!-- Tasbeh -->
+        <div class="resource-card">
+          <i class="fas fa-praying-hands resource-icon"></i>
+          <h3>عداد التسبيح</h3>
+          <div class="reference-link">
+            <a href="helal-encyclopedia.netlify.app" target="_blank">
+              helal-encyclopedia.netlify.app
+            </a>
+          </div>
+         
+        </div>
+
+        <!-- Adkhar -->
+        <div class="resource-card">
+          <i class="fas fa-book resource-icon"></i>
+          <h3>الأذكار</h3>
+          <div class="reference-link">
+            <a href="	https://www.islambook.com/azkar" target="_blank">
+              https://www.islambook.com/azkar
+            </a>
+          </div>
+          
+        </div>
+
+        <!-- Azan Times -->
+        <div class="resource-card">
+          <i class="fas fa-clock resource-icon"></i>
+          <h3>أوقات الأذان</h3>
+          <div class="reference-link">
+            <a href="https://api.aladhan.com/v1/timings" target="_blank">
+              https://api.aladhan.com/v1/timings
+            </a>
+          </div>
+         
+        </div>
+
+        <!-- Columns and Basic Signs of Islam
+        <div class="resource-card">
+          <i class="fas fa-mosque resource-icon"></i>
+          <h3>الأعمدة والعلامات الأساسية للإسلام</h3>
+          <div class="reference-link">
+            <a href="https://t.co/6ZPfHi50Tz?com.walid.maktbti" target="_blank">
+              https://t.co/6ZPfHi50Tz?com.walid.maktbti
+            </a>
+          </div>
+         
+        </div> -->
+
+        <!-- Obligations and Sunnahs -->
+        <div class="resource-card">
+          <i class="fas fa-balance-scale resource-icon"></i>
+          <h3>الواجبات والسنن</h3>
+          <div class="reference-link">
+            <a href="https://t.co/6ZPfHi50Tz?com.walid.maktbti" target="_blank">
+              https://t.co/6ZPfHi50Tz?com.walid.maktbti
+            </a>
+          </div>
+         
+        </div>
+
+        <!-- Prophet Muhammad (PBUH) -->
+        <div class="resource-card">
+          <i class="fas fa-star resource-icon"></i>
+          <h3>النبي محمد (ص)</h3>
+          <div class="reference-link">
+            <a href="https://t.co/6ZPfHi50Tz?com.walid.maktbti" target="_blank">
+              https://t.co/6ZPfHi50Tz?com.walid.maktbti
+            </a>
+          </div>
+          
+        </div>
+
+        <!-- Stories of Islam
+        <div class="resource-card">
+          <i class="fas fa-book-open resource-icon"></i>
+          <h3>قصص الاسلام</h3>
+          <div class="reference-link">
+            <a href="https://t.co/6ZPfHi50Tz?com.walid.maktbti" target="_blank">
+              https://t.co/6ZPfHi50Tz?com.walid.maktbti
+            </a>
+          </div>
+          
+        </div> -->
+        <div class="resource-card">
+          <i class="fas fa-palette resource-icon"></i>
+          <h3>الرسوم التوضيحية والأيقونات</h3>
+          <div class="reference-link">
+              <a href="https://www.freepik.com" target="_blank">
+                https://www.freepik.com
+              </a>
+          </div>
+          <div class="reference-link">
+              <a href="https://fontawesome.com" target="_blank">
+                https://fontawesome.com
+              </a>
+          </div>
+          <div class="reference-link">
+              <a href="https://dribbble.com" target="_blank">
+                https://dribbble.com
+              </a>
+          </div>
+      </div>
+      
+      </div>
+    </div>
+  </section>
+</body>
+</html>

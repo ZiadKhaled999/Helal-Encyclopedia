@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Share Button</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Share Button */
+    .share-button {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .share-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Share Modal */
+    .share-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease;
+      overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #eee;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 20px;
+      transition: color 0.2s ease;
+    }
+
+    .close-btn:hover {
+      color: #333;
+    }
+
+    /* Platforms Grid */
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .platform-item {
+      cursor: pointer;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      transition: all 0.2s ease;
+      border: 1px solid #eee;
+      background: #fff;
+    }
+
+    .platform-item:hover {
+      background: #f8f9fa;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .platform-item i {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .platform-item span {
+      font-size: 0.9em;
+      color: #444;
+      font-weight: 500;
+    }
+
+    /* Platform-specific colors */
+    .fa-facebook { color: #1877f2; }
+    .fa-x-twitter { color: #000; }
+    .fa-linkedin { color: #0a66c2; }
+    .fa-whatsapp { color: #25d366; }
+    .fa-telegram { color: #0088cc; }
+    .fa-quora { color: #b92b27; }
+    .fa-reddit { color: #ff4500; }
+    .fa-mastodon { color: #6364ff; }
+    .fa-tumblr { color: #35465c; }
+    .fa-viber { color: #7360f2; }
+    .fa-signal { color: #1798ff; }
+    .fa-weixin { color: #07c160; }
+    .fa-threads { color: #000000; }
+    .fa-discord { color: #5865f2; }
+
+    /* Mobile Optimization */
+    @media (max-width: 480px) {
+      .platforms-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .platform-item {
+        padding: 12px;
+      }
+
+      .platform-item i {
+        font-size: 24px;
+      }
+
+      .platform-item span {
+        font-size: 0.8em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Share Button -->
+  <button class="share-button" onclick="openShareModal()">
+    <i class="fas fa-share-alt"></i> Share
+  </button>
+
+  <!-- Share Modal -->
+  <div class="share-modal" id="shareModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Share via</h3>
+        <button class="close-btn" onclick="closeShareModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="platforms-grid">
+        <!-- Core Platforms -->
+        <div class="platform-item" onclick="shareTo('facebook')">
+          <i class="fab fa-facebook"></i>
+          <span>Facebook</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('whatsapp')">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('twitter')">
+          <i class="fab fa-x-twitter"></i>
+          <span>X (Twitter)</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('linkedin')">
+          <i class="fab fa-linkedin"></i>
+          <span>LinkedIn</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('threads')">
+          <i class="fab fa-threads"></i>
+          <span>Threads</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('quora')">
+          <i class="fab fa-quora"></i>
+          <span>Quora</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('reddit')">
+          <i class="fab fa-reddit"></i>
+          <span>Reddit</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('telegram')">
+          <i class="fab fa-telegram"></i>
+          <span>Telegram</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('mastodon')">
+          <i class="fab fa-mastodon"></i>
+          <span>Mastodon</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('tumblr')">
+          <i class="fab fa-tumblr"></i>
+          <span>Tumblr</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('viber')">
+          <i class="fab fa-viber"></i>
+          <span>Viber</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('signal')">
+          <i class="fab fa-signal"></i>
+          <span>Signal</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('wechat')">
+          <i class="fab fa-weixin"></i>
+          <span>WeChat</span>
+        </div>
+        <div class="platform-item" onclick="shareTo('discord')">
+          <i class="fab fa-discord"></i>
+          <span>Discord</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const baseURL = 'https://helal-encyclopedia.netlify.app';
+
+    function shareTo(platform) {
+      const encodedURL = encodeURIComponent(baseURL);
+      const platforms = {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodedURL}`,
+        twitter: `https://twitter.com/intent/tweet?url=${encodedURL}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`,
+        threads: `https://www.threads.net/intent/post?text=${encodedURL}`,
+        quora: `https://www.quora.com/share?url=${encodedURL}`,
+        reddit: `https://reddit.com/submit?url=${encodedURL}`,
+        telegram: `https://t.me/share/url?url=${encodedURL}`,
+        mastodon: `https://mastodon.social/share?text=${encodedURL}`,
+        tumblr: `https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodedURL}`,
+        viber: `viber://forward?text=${encodedURL}`,
+        signal: `https://signal.me/#/?text=${encodedURL}`,
+        wechat: `weixin://dl/chat?${encodedURL}`,
+        discord: `https://discord.com/channels/@me`,
+      };
+
+      window.open(platforms[platform] || baseURL, '_blank');
+    }
+
+    function openShareModal() {
+      document.getElementById('shareModal').style.display = 'flex';
+    }
+
+    function closeShareModal() {
+      document.getElementById('shareModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

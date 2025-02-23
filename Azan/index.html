@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أوقات الصلاة</title>
+    <link rel="stylesheet" href="../CDNs/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .header h1 i {
+            margin-left: 10px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 25px;
+            padding: 25px;
+            margin-top: 20px;
+            color: black;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            transform: translateY(-50px);
+        }
+        .card:hover {
+           
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .today-date {
+            background-color: #f0f4f8;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            border: 2px solid #667eea;
+        }
+        .sun-progress {
+            background: linear-gradient(135deg, #4a4e69, #2c3e50);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            position: relative;
+            height: 20px;
+        }
+        .sun-progress-bar {
+            background: linear-gradient(135deg, #9f7aea, #667eea);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .prayer-points {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            position: relative;
+        }
+        .prayer-points::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #9f7aea, #667eea);
+            z-index: 1;
+        }
+        .prayer-point {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #9f7aea, #667eea);
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+        .prayer-point.active {
+            background: linear-gradient(135deg, #764ba2, #4a4e69);
+            transform: scale(1.2);
+        }
+        .prayer-times {
+            margin-top: 20px;
+        }
+        .prayer-time {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f4f8;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+        .prayer-time:hover {
+            background-color: #667eea;
+            color: white;
+            transform: translateX(10px);
+        }
+        .prayer-time i {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        .upcoming-salah {
+            background-color: #f0f4f8;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .upcoming-salah h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .upcoming-salah p {
+            margin: 5px 0 0;
+            font-size: 18px;
+            color: #667eea;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .navigation-buttons button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .navigation-buttons button:hover {
+            background-color: #5a6fd1;
+            transform: translateY(-2px);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <img src="pray.jpg" alt="مسجد جميل في إسطنبول، تركيا">
+            <div class="today-date" id="today-date"></div>
+           
+            <div class="sun-progress">
+                <div class="sun-progress-bar" id="sun-progress-bar"></div>
+            </div>
+            <div class="prayer-points">
+                <div class="prayer-point" id="fajr-point"><i class="fas fa-moon"></i></div>
+                <div class="prayer-point" id="dhuhr-point"><i class="fas fa-sun"></i></div>
+                <div class="prayer-point" id="asr-point"><i class="fas fa-cloud-sun"></i></div>
+                <div class="prayer-point" id="maghrib-point"><i class="fas fa-sun"></i></div>
+                <div class="prayer-point" id="isha-point"><i class="fas fa-moon"></i></div>
+            </div>
+
+            <div class="upcoming-salah" id="upcoming-salah">
+                <h3>الصلاة القادمة</h3>
+                <p id="countdown">جاري الحساب...</p>
+            </div>
+            <div class="prayer-times" id="prayer-times">
+                <!-- أوقات الصلاة سيتم إدراجها هنا -->
+            </div>
+          
+            <div class="navigation-buttons">
+                <button id="prev-day">اليوم السابق</button>
+                <button id="next-day">اليوم التالي</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentDate = new Date();
+            let prayerTimes = [];
+            let userLocation = null;
+
+            // أوقات الصلاة الافتراضية (للعمل دون اتصال)
+            const offlinePrayerTimes = {
+                الفجر: "05:50",
+                الظهر: "13:30",
+                العصر: "15:45",
+                المغرب: "17:07",
+                العشاء: "19:30"                
+            };
+
+            function updateDateDisplay() {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('today-date').innerText = currentDate.toLocaleDateString('ar-EG', options);
+                fetchHijriDate(currentDate);
+            }
+
+            function fetchHijriDate(date) {
+                const apiUrl = `https://api.aladhan.com/v1/gToH?date=${date.toISOString().split('T')[0]}`;
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const hijriDate = data.data.hijri;
+                        document.getElementById('hijri-date').innerText = `${hijriDate.day} ${hijriDate.month.ar} ${hijriDate.year}`;
+                    });
+            }
+
+            function fetchAzanTimes(date) {
+                const dateKey = date.toISOString().split('T')[0];
+                const cachedTimes = localStorage.getItem(dateKey);
+
+                if (cachedTimes) {
+                    prayerTimes = JSON.parse(cachedTimes);
+                    updateUI();
+                } else if (userLocation) {
+                    const { latitude, longitude } = userLocation;
+                    getAzanTimes(latitude, longitude, dateKey)
+                        .then(times => {
+                            prayerTimes = times;
+                            localStorage.setItem(dateKey, JSON.stringify(times));
+                            updateUI();
+                        })
+                        .catch(() => {
+                            // استخدام الأوقات الافتراضية في حالة فشل الاتصال
+                            prayerTimes = Object.entries(offlinePrayerTimes).map(([title, time]) => ({
+                                title,
+                                start: `${dateKey}T${time}:00`
+                            }));
+                            updateUI();
+                        });
+                } else {
+                    // استخدام الأوقات الافتراضية في حالة عدم تحديد الموقع
+                    prayerTimes = Object.entries(offlinePrayerTimes).map(([title, time]) => ({
+                        title,
+                        start: `${dateKey}T${time}:00`
+                    }));
+                    updateUI();
+                }
+            }
+
+            function getAzanTimes(latitude, longitude, date) {
+                const apiUrl = `https://api.aladhan.com/v1/timings/${date}?latitude=${latitude}&longitude=${longitude}&method=15`;
+                return fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const timings = data.data.timings;
+                        return [
+                            { title: 'الفجر', start: `${date}T${timings.Fajr}` },
+                            { title: 'الظهر', start: `${date}T${timings.Dhuhr}` },
+                            { title: 'العصر', start: `${date}T${timings.Asr}` },
+                            { title: 'المغرب', start: `${date}T${timings.Maghrib}` },
+                            { title: 'العشاء', start: `${date}T${timings.Isha}` }
+                        ];
+                    });
+            }
+
+            function updateUI() {
+                updateDateDisplay();
+                updateSunProgress();
+                updatePrayerPoints();
+                renderPrayerTimes();
+                calculateUpcomingSalah();
+            }
+
+            function updateSunProgress() {
+                const now = new Date();
+                const today = now.toISOString().split('T')[0];
+                const fajrTime = new Date(prayerTimes[0].start);
+                const ishaTime = new Date(prayerTimes[4].start);
+
+                const totalDuration = ishaTime - fajrTime;
+                const elapsedTime = now - fajrTime;
+                const progress = Math.min(Math.max((elapsedTime / totalDuration) * 100, 0), 100);
+
+                document.getElementById('sun-progress-bar').style.width = `${progress}%`;
+            }
+
+            function updatePrayerPoints() {
+                const now = new Date();
+                const points = ['fajr-point', 'dhuhr-point', 'asr-point', 'maghrib-point', 'isha-point'];
+                points.forEach((point, index) => {
+                    const salahTime = new Date(prayerTimes[index].start);
+                    document.getElementById(point).classList.toggle('active', now >= salahTime);
+                });
+            }
+
+            function renderPrayerTimes() {
+                const prayerTimesDiv = document.getElementById('prayer-times');
+                prayerTimesDiv.innerHTML = prayerTimes
+                    .map(prayer => `
+                        <div class="prayer-time">
+                            <div><i class="${getPrayerIcon(prayer.title)}"></i> ${prayer.title}</div>
+                            <div>${formatTime(prayer.start.split('T')[1])}</div>
+                        </div>
+                    `)
+                    .join('');
+            }
+
+            function calculateUpcomingSalah() {
+                const now = new Date();
+                let upcoming = null;
+
+                prayerTimes.forEach(salah => {
+                    const salahTime = new Date(salah.start);
+                    if (salahTime > now) {
+                        if (!upcoming || salahTime < new Date(upcoming.start)) {
+                            upcoming = salah;
+                        }
+                    }
+                });
+
+                if (upcoming) {
+                    const upcomingSalahDiv = document.getElementById('upcoming-salah');
+                    upcomingSalahDiv.innerHTML = `
+                        <h3>${upcoming.title}</h3>
+                        <p id="countdown">جاري الحساب...</p>
+                    `;
+                    startCountdown(upcoming.start);
+                }
+            }
+
+            function startCountdown(salahTime) {
+                const countdownDiv = document.getElementById('countdown');
+                const interval = setInterval(() => {
+                    const now = new Date();
+                    const timeLeft = new Date(salahTime) - now;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        countdownDiv.innerText = "حان وقت الصلاة!";
+                        return;
+                    }
+
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    countdownDiv.innerText = `${hours} س ${minutes} د ${seconds} ث`;
+                }, 1000);
+            }
+
+            function getPrayerIcon(title) {
+                switch (title) {
+                    case 'الفجر': return 'fas fa-moon';
+                    case 'الظهر': return 'fas fa-sun';
+                    case 'العصر': return 'fas fa-cloud-sun';
+                    case 'المغرب': return 'fas fa-sun';
+                    case 'العشاء': return 'fas fa-moon';
+                   
+                }
+            }
+
+            function formatTime(time) {
+                const [hours, minutes] = time.split(':');
+                const hours12 = (hours % 12) || 12;
+                const ampm = hours >= 12 ? 'م' : 'ص';
+                return `${hours12}:${minutes} ${ampm}`;
+            }
+
+            function changeDate(days) {
+                currentDate.setDate(currentDate.getDate() + days);
+                fetchAzanTimes(currentDate);
+                document.querySelector('.card').classList.add('fade-in');
+                setTimeout(() => document.querySelector('.card').classList.remove('fade-in'), 500);
+            }
+
+            // التهيئة
+            updateDateDisplay();
+            fetchAzanTimes(currentDate);
+
+            document.getElementById('prev-day').addEventListener('click', () => changeDate(-1));
+            document.getElementById('next-day').addEventListener('click', () => changeDate(1));
+
+            setInterval(updateSunProgress, 1000);
+        });
+    </script>
+    <script src="../CDNs/fontawesome/js/all.min.js"></script>
+</body>
+</html>

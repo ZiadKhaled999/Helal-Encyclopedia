@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المسلمين في الأندالوس</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<div class="header">
+    <h1 class="h">المسلمين في الأندالوس </h1>
+
+</div>
+<body>
+
+    <div class="button-container" id="buttonContainer">
+
+    </div>
+
+    <script>
+        const labels = [
+            "فكرة الفتح ودور طارق بن زياد وموسى بن نصير",
+            "عمليات الفتح",
+            "فترة القوة في عهد الولاة",
+            "عبد الرحمن الداخل (صقر قريش): الإمارة الأموية فترة القوة والازدهار",
+            " عبد الرحمن الثالث (الناصر): عهد الخلافة الأموية ",
+            "الدولة العامرية أو عصر سيطرة الوزراء",
+            " محمد بن تومرت: دولة الموحدين ( 539- 620هـ ) ",
+            "عصر الضعف فى عهد الولاة",
+            "مرحلة التدهور في عهد الإمارة الأموية",
+            "عهد الضعف في الدولة العامرية",
+            "الانهيار ونهاية حكم الأمويين بالأندلس: ( 399هـ- 422هـ )",
+            "عهد دول الطوائف ( 422-897هـ= 1031- 1086م )",
+            "تاشفين ونهاية دولة المرابطين",
+            "أسباب سقوط دولة الموحدين",
+            "دولة بني الأحمر في مملكة غرناطة ( 620- 897هـ )",
+            "حركة إزالة الإسلام في الأندلس",
+        ]
+
+
+
+        const buttonContainer = document.getElementById("buttonContainer");
+        
+        const num = 16;
+        for (let i = 0; i < num; i++) {
+
+            buttonContainer.innerHTML += `<a href= "../GraetesofIslami/INAndalus/${i}.html " class="btn">${labels[i]}</a>`;
+
+        }
+    </script>
+</body>
+
+</html>

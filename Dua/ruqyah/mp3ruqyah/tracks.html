@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Tracks</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../CDNs/fontawesome/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="phone light">
+            <div id="top-menu">
+                
+            </div>
+            <div id="track-list">
+                <!-- Tracks will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+    <script>
+        // Sample track data (replace with your actual data)
+        const tracks = [
+    { src: 'audio/track1.mp3', title: 'آيات السكينة علاج',  image: 'images/track1.jpg' },
+    { src: 'audio/track2.mp3', title: 'آيات الشفاء',  image: 'images/track2.jpg' },
+    { src: 'audio/track3.mp3', title: 'آية الكرسي',  image: 'images/track3.jpg' },
+    { src: 'audio/track4.mp3', title: 'أدعية من الكتاب والسنة',  image: 'images/track4.jpg' },
+    { src: 'audio/track5.mp3', title: 'الأذان مكرر',  image: 'images/track5.jpg' },
+    { src: 'audio/track6.mp3', title: 'الدعاء للمعيون والمسحور',  image: 'images/track6.jpg' },
+    { src: 'audio/track7.mp3', title: 'الرقية الشاملة',  image: 'images/track7.jpg' },
+    { src: 'audio/track8.mp3', title: 'العين والحسد',  image: 'images/track8.jpg' },
+    { src: 'audio/track9.mp3', title: 'المعوذتين',  image: 'images/track9.jpg' },
+    { src: 'audio/track10.mp3', title: 'تعذيب المس',  image: 'images/track10.jpg' },
+    { src: 'audio/track11.mp3', title: 'تعذيب مس العاشق',  image: 'images/track11.jpg' },
+    { src: 'audio/track12.mp3', title: 'حرق المس',  image: 'images/track12.jpg' },
+    { src: 'audio/track13.mp3', title: 'دعاء التوحيد',  image: 'images/track13.jpg' },
+    { src: 'audio/track14.mp3', title: 'رسالة تحذير للجن',  image: 'images/track14.jpg' },
+    { src: 'audio/track15.mp3', title: 'سورة الفاتحة',  image: 'images/track15.jpg' },
+    { src: 'audio/track16.mp3', title: 'طرد وساوس القرين',  image: 'images/track16.jpg' },
+    { src: 'audio/track17.mp3', title: 'للعين والحسد والسحر',  image: 'images/track17.jpg' },
+    { src: 'audio/track18.mp3', title: 'نبذة عن الرقية',  image: 'images/track18.jpg' }
+];
+
+        const trackList = document.getElementById('track-list');
+
+        // Dynamically generate track list
+        tracks.forEach((track, index) => {
+            const trackDiv = document.createElement('div');
+            trackDiv.className = 'track';
+            trackDiv.innerHTML = `
+                <img src="${track.image}" alt="${track.title}">
+                <div class="track-info">
+                    <span class="track-title">${track.title}</span>
+                   
+                </div>
+                <div class="play-button" onclick="selectTrack('${track.src}', '${track.title}', '${track.artist}', '${track.image}')">
+                    <i class="fas fa-play"></i>
+                </div>
+            `;
+            trackList.appendChild(trackDiv);
+        });
+
+        function selectTrack(src, title, artist, image) {
+            // Store the selected track in localStorage
+            localStorage.setItem('selectedTrack', JSON.stringify({ src, title, artist, image }));
+            // Redirect to the player page
+            window.location.href = 'index.html';
+        }
+    </script>
+    <script src="../../../CDNs/fontawesome/js/all.min.js"></script>
+</body>
+</html>

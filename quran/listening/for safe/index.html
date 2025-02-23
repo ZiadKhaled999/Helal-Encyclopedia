@@ -1,0 +1,367 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Quran Readers</title>
+  <style>
+    ::selection{
+      background: #00cc00;
+      font-weight: 900;
+      font-family: sans-serif;
+      padding: 1px 0;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 25px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      padding: 8px;
+      width: 70%;
+      max-width: 600px;
+    }
+
+    .search-bar input {
+      border: none;
+      padding: 10px;
+      border-radius: 25px;
+      outline: none;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .search-bar .search-icon {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .back-btn {
+      background-color: white;
+      color: #4CAF50;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #45a049;
+      color: white;
+    }
+
+    #readerList,
+    #surahList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px;
+      flex-direction: row-reverse;
+      padding-bottom: 50px;
+    }
+
+    .reader,
+    .surah {
+      background-color: white;
+      padding: 15px;
+      padding-top: 25px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 150px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .reader:hover,
+    .surah:hover {
+      transform: scale(1.05);
+    }
+
+    .reader img,
+    .surah img {
+      width: 100%;
+      border-radius: 15px;
+      height: 150px;
+    }
+
+    .rewaya-ticket {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      background-color: #52ae58;
+      color: #000000;
+      padding: 5px 10px 5px 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 10;
+    }
+
+    .reader a,
+    .surah a {
+      text-decoration: none;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .reader a {
+      display: inline-block;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      text-align: center;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #dadada;
+      color: black;
+      padding: 0 5px;
+    }
+
+    .audio-container {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .audio-controls {
+      width: 100%;
+    }
+
+    /* Control bar at the bottom */
+    #controlBar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    #controlBar button,
+    #controlBar input {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #controlBar input {
+      width: 100px;
+      padding: 5px;
+      border-radius: 5px;
+      color: #333;
+    }
+  </style>
+
+</head>
+
+<body>
+  <header>
+    <div class="search-bar">
+      <input type="text" id="readerSearch" placeholder="بحث عن القارئ" oninput="filterReaders()">
+      <button class="search-icon" onclick="searchReaders()"><i class="fas fa-search"></i></button>
+      <input type="text" id="surahSearch" placeholder="بحث عن السورة" oninput="filterSurahs()" style="display:none;">
+    </div>
+    <button class="back-btn" onclick="showReaders()"><i class="fas fa-arrow-left"></i></button>
+  </header>
+
+  <div id="readerList"></div>
+  <div id="surahList" style="display:none;"></div>
+
+
+
+  <script>
+    let quranReaders = [];
+    let currentReaderIndex = -1;
+    let currentSurahIndex = 0;
+    let isPlaying = false;
+    let isRepeating = false;
+    let timer = null;
+
+    // Fetch the JSON data with reader and surah information
+    fetch('readers.json')
+      .then(response => response.json())
+      .then(data => {
+        quranReaders = data;
+        showReaders();  // Show readers after data is loaded
+      })
+      .catch(error => console.error('Error loading JSON data:', error));
+
+    function showReaders() {
+      document.getElementById('surahList').style.display = 'none';
+      document.getElementById('readerList').style.display = 'flex';
+      document.getElementById('surahSearch').style.display = 'none';
+      document.getElementById('readerSearch').style.display = 'block';
+
+      let readerList = document.getElementById('readerList');
+      readerList.innerHTML = ''; // Clear previous content
+
+      quranReaders.forEach((reader, index) => {
+        let readerDiv = document.createElement('div');
+        readerDiv.classList.add('reader');
+        readerDiv.innerHTML = `
+          <div class="rewaya-ticket">${reader.rewaya}</div>
+          <img src="readings/${reader.id}.png" alt="${reader.name}" class="hover-effect">
+          <a href="#" onclick="showSurahs(${index})">${reader.name}</a>
+        `;
+        readerList.appendChild(readerDiv);
+      });
+    }
+
+    function showSurahs(readerIndex) {
+      document.getElementById('readerList').style.display = 'none';
+      document.getElementById('surahList').style.display = 'flex';
+      document.getElementById('surahSearch').style.display = 'block';
+      document.getElementById('readerSearch').style.display = 'none';
+
+      let surahList = document.getElementById('surahList');
+      surahList.innerHTML = ''; // Clear previous content
+      let reader = quranReaders[readerIndex];
+      let baseUrl = reader.Server;
+      let suras = reader.suras.split(',');
+      currentReaderIndex = readerIndex;
+
+      const surahNames = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", " يوسف", "الرعد", "ابراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "المؤمنون", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", " الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الانسان", "المرسلات", "النجم", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "طارق", " الأعلى", "الغاشية", "الفجر", "البلد", " الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"]
+
+
+
+      suras.forEach(surahNumber => {
+        let formattedSurahNumber = surahNumber.trim().padStart(3, '0');
+        let surahDiv = document.createElement('div');
+        surahDiv.classList.add('surah');
+        surahDiv.innerHTML = `
+          <img src="images/showings/s001.png" alt="Surah ${formattedSurahNumber}" class="hover-effect">
+          <p>${surahNames[parseInt(surahNumber) - 1]}</p>
+          <div class="audio-container">
+            <audio class="audio-controls" controls controlsList="nodownload" preload="auto">
+              <source src="${baseUrl}/${formattedSurahNumber}.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        `;
+        surahList.appendChild(surahDiv);
+      });
+    }
+
+    function filterReaders() {
+      let searchTerm = document.getElementById('readerSearch').value.toLowerCase();
+      let readerDivs = document.querySelectorAll('#readerList .reader');
+
+      if (searchTerm.trim() === '') {
+        readerDivs.forEach(div => {
+          div.style.display = 'block';
+        });
+      } else {
+        readerDivs.forEach(div => {
+          let readerName = div.querySelector('a').innerText.toLowerCase();
+          div.style.display = readerName.includes(searchTerm) ? 'block' : 'none';
+        });
+      }
+    }
+
+    function filterSurahs() {
+      let searchTerm = document.getElementById('surahSearch').value.toLowerCase();
+      let surahDivs = document.querySelectorAll('#surahList .surah');
+      surahDivs.forEach(div => {
+        let surahName = div.querySelector('p').innerText.toLowerCase();
+        div.style.display = surahName.includes(searchTerm) ? 'block' : 'none';
+      });
+    }
+
+    function searchReaders() {
+      filterReaders();
+    }
+
+    // Control bar functionalities
+    function togglePlayPause() {
+      const audio = document.querySelector('.audio-controls');
+      if (isPlaying) {
+        audio.pause();
+        document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
+      } else {
+        audio.play();
+        document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function playNextSurah() {
+      currentSurahIndex = (currentSurahIndex + 1) % quranReaders[currentReaderIndex].suras.split(',').length;
+      playSurah(currentSurahIndex);
+    }
+
+    function playPreviousSurah() {
+      currentSurahIndex = (currentSurahIndex - 1 + quranReaders[currentReaderIndex].suras.split(',').length) % quranReaders[currentReaderIndex].suras.split(',').length;
+      playSurah(currentSurahIndex);
+    }
+
+    function toggleRepeat() {
+      isRepeating = !isRepeating;
+      document.getElementById('repeatBtn').style.color = isRepeating ? 'yellow' : 'white';
+    }
+
+    function setTimer() {
+      const minutes = document.getElementById('timerInput').value;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      if (minutes && !isNaN(minutes)) {
+        timer = setTimeout(() => {
+          document.querySelector('.audio-controls').pause();
+        }, minutes * 60 * 1000);
+      }
+    }
+
+    function playSurah(index) {
+      const surahDiv = document.querySelectorAll('.surah')[index];
+      const audio = surahDiv.querySelector('.audio-controls');
+      document.querySelectorAll('.audio-controls').forEach(a => a.pause());  // Stop other audios
+      audio.play();
+      togglePlayPause();  // Update the control bar to reflect the playing state
+    }
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

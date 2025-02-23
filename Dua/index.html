@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Page</title>
+    <script src="../CDNs/tailwindcsscdn.js"></script>
+    <link rel="stylesheet" href="#">
+    <style>
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            /* Ensure it's above other elements */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 7px;
+            left: 8px;
+            background-color: #6a5acd;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            transform: rotate(270deg)
+        }
+
+        .back-button:hover {
+            background-color: #e5e7eb;
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-screen relative">
+    <button class="back-button" onclick="window.history.back()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11.414V14a1 1 0 11-2 0V6.586L6.707 9.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 6.586z"
+                clip-rule="evenodd" />
+        </svg>
+    </button>
+
+    <div class="container bg-white rounded-3xl w-full p-4">
+        <!-- Main Element 1 -->
+        <div class="rounded-xl p-4 flex flex-col items-center shadow card item"
+            onclick="navigateTo('ruqyah/index.html')">
+            <img src="../imgs/illustrations/Dua/Legalruqyah.jpg" alt="Listening" class="w-16 h-16 mb-2">
+            <p class="text-sm font-bold text-gray-800">الرقية الشرعية</p>
+            
+        </div>
+
+        <!-- Main Element 2 -->
+        <div class="rounded-xl p-4 flex flex-col items-center shadow card item mt-6"
+            onclick="navigateTo('ادعيهطلبالعلم/askingforstudy.html')">
+            <img src="../imgs/illustrations/Dua/askinforstudy.png" alt="Reading" class="w-16 h-16 mb-2">
+            <p class="text-sm font-bold text-gray-800">ادعيه طلب العلم</p>
+           
+        </div>
+
+        <!-- Main Element 3 -->
+        <div class="rounded-xl p-4 flex flex-col items-center shadow card item mt-6"
+            onclick="navigateTo('ادعيهللميت/diedman.html')">
+            <img src="../imgs/illustrations/Dua/diedman.jpg" alt="Finishing" class="w-16 h-16 mb-2">
+            <p class="text-sm font-bold text-gray-800">ادعيه للميت</p>
+            
+        </div>
+        <!-- Main Element 4 -->
+        <div class="rounded-xl p-4 flex flex-col items-center shadow card item mt-6"
+            onclick="navigateTo('دعاءالاستخارة/istkhara.html')">
+            <img src="../imgs/illustrations/Dua/Istikhara.png" alt="Finishing" class="w-16 h-16 mb-2">
+            <p class="text-sm font-bold text-gray-800">دعاء الاستخارة</p>
+            
+        </div>
+    </div>
+   
+
+    <script>
+        function navigateTo(url) {
+            window.location.href = url
+        }
+
+        const loader = document.getElementById('loading');
+
+        // Function to show the loader
+        function showLoader() {
+            loader.style.display = 'block';
+        }
+
+        // Function to hide the loader
+        function hideLoader() {
+            loader.style.display = 'none';
+        }
+        showLoader();
+
+        window.addEventListener('load', () => {
+            setTimeout(()=>{
+                hideLoader();
+            },900) // Hide loader once the page is fully loaded
+        });
+    </script>
+</body>
+
+</html>
