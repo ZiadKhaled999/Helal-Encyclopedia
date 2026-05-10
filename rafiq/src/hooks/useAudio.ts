@@ -37,7 +37,7 @@ export function useAudio() {
       });
 
       const { sound: newSound } = await Audio.Sound.createAsync(
-        { uri },
+        typeof uri === 'number' ? uri : { uri },
         { shouldPlay: false },
         onPlaybackStatusUpdate
       );
