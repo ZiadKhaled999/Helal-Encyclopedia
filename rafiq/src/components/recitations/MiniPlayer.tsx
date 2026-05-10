@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors } from '../../src/constants/colors';
-import { Spacing } from '../../src/constants/spacing';
-import { Fonts, FontSizes } from '../../src/constants/typography';
+import { Colors } from '../../constants/colors';
+import { Spacing } from '../../constants/spacing';
+import { Fonts, FontSizes } from '../../constants/typography';
 
 interface MiniPlayerProps {
   visible: boolean;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { ScreenWrapper } from '../../src/components/shared/ScreenWrapper';
-import { BackHeader } from '../../src/components/shared/BackHeader';
-import { ArabicText } from '../../src/components/shared/ArabicText';
-import { Card } from '../../src/components/ui/Card';
-import { Colors } from '../../src/constants/colors';
-import { Spacing } from '../../src/constants/spacing';
-import { FontSizes } from '../../src/constants/typography';
+import { ScreenWrapper } from '../src/components/shared/ScreenWrapper';
+import { BackHeader } from '../src/components/shared/BackHeader';
+import { ArabicText } from '../src/components/shared/ArabicText';
+import { Card } from '../src/components/ui/Card';
+import { Colors } from '../src/constants/colors';
+import { Spacing } from '../src/constants/spacing';
+import { FontSizes } from '../src/constants/typography';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 

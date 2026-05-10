@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Animated, Easing } from 'react-native';
-import { ScreenWrapper } from '../../src/components/shared/ScreenWrapper';
-import { BackHeader } from '../../src/components/shared/BackHeader';
-import { ArabicText } from '../../src/components/shared/ArabicText';
-import { Card } from '../../src/components/ui/Card';
-import { useQibla } from '../../src/hooks/useQibla';
-import { useLocation } from '../../src/hooks/useLocation';
-import { Colors } from '../../src/constants/colors';
-import { Spacing } from '../../src/constants/spacing';
-import { FontSizes } from '../../src/constants/typography';
+import { ScreenWrapper } from '../src/components/shared/ScreenWrapper';
+import { BackHeader } from '../src/components/shared/BackHeader';
+import { ArabicText } from '../src/components/shared/ArabicText';
+import { Card } from '../src/components/ui/Card';
+import { useQibla } from '../src/hooks/useQibla';
+import { useLocation } from '../src/hooks/useLocation';
+import { Colors } from '../src/constants/colors';
+import { Spacing } from '../src/constants/spacing';
+import { FontSizes } from '../src/constants/typography';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function QiblaScreen() {

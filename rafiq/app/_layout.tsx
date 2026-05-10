@@ -5,8 +5,24 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, View, Platform } from 'react-native';
+import { OnboardingScreen } from '../src/screens/OnboardingScreen';
+import { useOnboardingStore } from '../src/store/onboardingStore';
 
 const queryClient = new QueryClient();
+
+function AppContent() {
+  const { hasCompletedOnboarding } = useOnboardingStore();
+
+  if (!hasCompletedOnboarding) {
+    return <OnboardingScreen />;
+  }
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts(
@@ -30,7 +46,7 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack screenOptions={{ headerShown: false }} />
+            <AppContent />
             <StatusBar style="auto" />
           </GestureHandlerRootView>
         </SafeAreaProvider>
@@ -50,7 +66,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <Stack screenOptions={{ headerShown: false }} />
+          <AppContent />
           <StatusBar style="auto" />
         </GestureHandlerRootView>
       </SafeAreaProvider>
