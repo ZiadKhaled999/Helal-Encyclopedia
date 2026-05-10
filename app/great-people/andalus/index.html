@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المسلمون في الأندلس</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; }
+        .back-btn { position: fixed; top: 15px; left: 15px; background: #6a5acd; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #333; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .figure-card { background: white; border-radius: 10px; padding: 15px; cursor: pointer; transition: transform 0.3s; }
+        .figure-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .figure-name { font-weight: bold; color: #374151; }
+        .figure-title { font-size: 0.9em; color: #6b7280; }
+    </style>
+</head>
+<body dir="rtl">
+    <button class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></button>
+    <div class="container">
+        <h1>المسلمون في الأندلس</h1>
+        <div class="grid" id="figuresGrid"></div>
+    </div>
+    <script>
+        const figures = [
+            {id: 0, name: "طارق بن زياد وموسى بن نصير", title: "فكرة الفتح ودور طارق بن زياد"},
+            {id: 1, name: "عمليات الفتح", title: "عمليات الفتح الإسلامي للأندلس"},
+            {id: 2, name: "فترة القوة في عهد الولاة", title: "فترة القوة والازدهار"},
+            {id: 3, name: "عبد الرحمن الداخل", title: "الإمارة الأموية فترة القوة والازدهار"},
+            {id: 4, name: "عبد الرحمن الثالث", title: "الناصر بالله"},
+            {id: 5, name: "الدولة العامرية", title: "عصر سيطرة الوزراء"},
+            {id: 6, name: "دولة الموحدين", title: "الفتوحات والانتصارات"},
+            {id: 7, name: "عصر الضعف", title: "الفترات الصعبة في الأندلس"},
+            {id: 8, name: "مرحلة التدهور", title: "الانهيار الأموي"},
+            {id: 9, name: "الانهيار", title: "نهاية حكم الأمويين"},
+            {id: 10, name: "دولة الطوائف", title: "عهد ملوك الطوائف"},
+            {id: 11, name: "تاشفين", title: "نهاية دولة المرابطين"},
+            {id: 12, name: "أسباب السقوط", title: "أسباب سقوط الموحدين"},
+            {id: 13, name: "بني الأحمر", title: "دولة غرناطة الأخيرة"},
+            {id: 14, name: "حركة إزالة الإسلام", title: "سقوط الأندلس"}
+        ];
+        const grid = document.getElementById('figuresGrid');
+        figures.forEach(f => {
+            grid.innerHTML += `<div class="figure-card" onclick="location.href='figure.html?id=${f.id}'">
+                <div class="figure-name">${f.name}</div>
+                <div class="figure-title">${f.title}</div>
+            </div>`;
+        });
+    </script>
+</body>
+</html>

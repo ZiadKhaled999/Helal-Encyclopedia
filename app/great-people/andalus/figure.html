@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">الشخصية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #6a5acd, #8a2be2); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+        .content { background: white; padding: 20px; border-radius: 10px; line-height: 1.8; }
+        .back-btn { position: fixed; top: 15px; left: 15px; background: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+    </style>
+</head>
+<body dir="rtl">
+    <button class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></button>
+    <div class="container">
+        <div class="header">
+            <h1 id="figureName">الاسم</h1>
+            <p id="figureTitle">اللقب</p>
+        </div>
+        <div class="content" id="figureContent">
+            <p>المحتوى سيتم تحميله من ملفات HTML الأندلسية.</p>
+        </div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id') || '0';
+        const data = {
+            0: {name: "طارق بن زياد وموسى بن نصير", title: "فكرة الفتح ودور طارق بن زياد", content: "كان الفتح الإسلامي لشبة الجزيرة الأيبيرية – إسبانيا والبرتغال – أمرًا طبيعيًا حسب الخطة التي اتبعه المسلمون. دخل الإسلام بلاد الأندلس من عام 92هـ واستمر حكم المسلمين بها إلى عام 897هـ."},
+            1: {name: "عمليات الفتح", title: "عمليات الفتح الإسلامي للأندلس", content: "قام طارق بن زياد بالتجهز للعبور؛ فقام ببناء عدد كبير من السفن، ثم عبر المضيق فنزل تجاه الجزيرة الخضراء، وانتصر على القوطيين في معركة وادي لكة."},
+            2: {name: "عبد الرحمن الداخل", title: "الإمارة الأموية فترة القوة والازدهار", content: "هو عبد الرحمن بن معاوية بن هشام، مؤسس الدولة الأموية بالأندلس. استطاع القضاء على الثورات والصعوبات الداخلية التي واجهته."},
+            3: {name: "عبد الرحمن الثالث", title: "الناصر بالله", content: "كان الناصر أميرًا حازمًا، وذكيًا عادلاً، وعاقلاً شجاعًا. أصبحت قرطبة أجمل مدائن أوربا على الإطلاق خلال عهده."}
+        };
+        if(data[id]) {
+            document.getElementById('figureName').textContent = data[id].name;
+            document.getElementById('figureTitle').textContent = data[id].title;
+            document.getElementById('figureContent').innerHTML = `<p>${data[id].content}</p>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">الشخصية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #6a5acd, #8a2be2); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+        .content { background: white; padding: 20px; border-radius: 10px; line-height: 1.8; }
+        .back-btn { position: fixed; top: 15px; left: 15px; background: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+    </style>
+</head>
+<body dir="rtl">
+    <button class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></button>
+    <div class="container">
+        <div class="header">
+            <h1 id="figureName">الاسم</h1>
+            <p id="figureTitle">اللقب</p>
+        </div>
+        <div class="content" id="figureContent">
+            <p>المحتوى سيتم تحميله من ملفات HTML الأصلية.</p>
+        </div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id') || '0';
+        const data = {
+            0: {name: "أبي بكر الصديق", title: "أول خليفة لرسول الله", content: "رجلٍ في التاريخ يؤمن برسالة محمد -صلى اللَّه عليه وسلم-. وهو أول أعظم عشرة رجال وطأت أقدامهم الأرض بعد الأنبياء. كان أبو بكر من خيرة رجال مكة قبل الإسلام، وكان أبو سيدة عائشة رضي اللَّه عنها."},
+            1: {name: "الأمير محمد بن عبد الكريم الخطابي", title: "أسطورة المغرب الإسلامي", content: "أسطورة المغرب الإسلامي الذي قاد معركة أنوال الخالدة ضد الإسبان. كان مولى مغربي أمازيغي لموسى بن نصير، وقاد المقاومة الإسلامية في المغرب."},
+            2: {name: "السيدة هاجر", title: "أم المؤمنين", content: "نصيب نساء الإسلام يفوق النصف بين عظماء هذه الأمة. تنتمي إلى الأمة العظيمة، ولفظة القبط تعني سكان وادي النيل."},
+            3: {name: "عمرو بن العاص", title: "أرطبون العرب", content: "قائد عسكري مبدع في فتوحات الإسلام. شارك في فتوحات الأندلس وكان من بين القادة العسكريين البارزين."}
+        };
+        if(data[id]) {
+            document.getElementById('figureName').textContent = data[id].name;
+            document.getElementById('figureTitle').textContent = data[id].title;
+            document.getElementById('figureContent').innerHTML = `<p>${data[id].content}</p>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أبرز 100 شخصية في الإسلام</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; }
+        .back-button { position: fixed; top: 15px; left: 15px; background-color: #6a5acd; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; }
+        .back-button:hover { background-color: #5a4abf; }
+        .back-button svg { width: 20px; height: 20px; fill: white; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .figure-card { background: white; border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; transition: transform 0.3s; border: 1px solid #eee; }
+        .figure-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .figure-name { font-weight: bold; color: #374151; margin: 10px 0; }
+        .figure-title { font-size: 0.9em; color: #6b7280; }
+    </style>
+</head>
+<body dir="rtl">
+    <button class="back-button" onclick="window.history.back()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11.414V14a1 1 0 11-2 0V6.586L6.707 9.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 6.586z" clip-rule="evenodd"/>
+        </svg>
+    </button>
+    <div class="container">
+        <h1>أبرز 100 شخصية في الإسلام</h1>
+        <div class="grid" id="figuresGrid"></div>
+    </div>
+    <script>
+        const figures = [
+            {id: 0, name: "أبي بكر الصديق", title: "أول خليفة لرسول الله"},
+            {id: 1, name: "الأمير محمد بن عبد الكريم الخطابي", title: "أسطورة المغرب الإسلامي"},
+            {id: 2, name: "السيدة هاجر", title: "أم المؤمنين"},
+            {id: 3, name: "عمرو بن العاص", title: "أرطبون العرب"},
+            {id: 4, name: "النجاشي", title: "الجندي المجهول"},
+            {id: 5, name: "المقداد بن عمرو", title: "صديق رسول الله"},
+            {id: 6, name: "البدريون", title: "أبطال الفتوحات"},
+            {id: 7, name: "الزبير بن العوّام", title: "حواري رسول الله"},
+            {id: 8, name: "طلحة بن عبيد الله", title: "حواري رسول الله"},
+            {id: 9, name: "سليم الأول", title: "مدمر دولة الصفويين"},
+            {id: 10, name: "الأخوان بربروسا", title: "عمالقة البحرية الإسلامية"},
+            {id: 11, name: "خالد بن الوليد", title: "سيف الله الحادي"},
+            {id: 12, name: "عمر بن الخطاب", title: "فاروق الإسلام"},
+            {id: 13, name: "عبد القادر الجزائري", title: "عملاق الجزائر"},
+            {id: 14, name: "عمر المختار", title: "أسد الصحراء"},
+            {id: 15, name: "سعيد بن يزيد", title: "قائد الفرسان الإسلامي"},
+            {id: 16, name: "زيد بن الخطاب", title: "صقر اليمامة"},
+            {id: 17, name: "عبد الله بن ياسين", title: "مؤسس المرابطين"},
+            {id: 18, name: "أبو بكر اللنتوني", title: "فاتح أفريقيا"},
+            {id: 19, name: "المتوكل بن الأفطس", title: "العزيز في زمن الذلة"},
+            {id: 20, name: "يوسف بن تاشفين", title: "زعيم إمبراطورية المرابطين"},
+            {id: 21, name: "عبد الرحمن الناصر", title: "الناصر بالله"},
+            {id: 22, name: "عثمان بن عفان", title: "الخليفة الذي ضحى بالملك"},
+            {id: 23, name: "معاوية بن أبي سفيان", title: "خال المؤمنين"},
+            {id: 24, name: "علي بن أبي طالب", title: "الفاروق"},
+            {id: 25, name: "الحسن بن علي", title: "خامس الخلفاء"},
+            {id: 26, name: "يزيد بن معاوية", title: "غاري القسطنطينية"},
+            {id: 27, name: "أبو أيوب الأنصاري", title: "أسد القسطنطينية"},
+            {id: 28, name: "فاطمة بنت محمد", title: "سيدة نساء أهل الجنة"},
+            {id: 29, name: "خديجة بنت خويلد", title: "رمز الزوجة الصالحة"},
+            {id: 30, name: "عائشة أم المؤمنين", title: "أم المؤمنين"},
+            {id: 31, name: "سلمان الفارسي", title: "الباحث عن السعادة"},
+            {id: 32, name: "أحمد بن تيمية", title: "شيخ الإسلام"},
+            {id: 33, name: "ثابت بن قرة", title: "إقليدس العرب"},
+            {id: 34, name: "عبد الرحمن بن عوف", title: "مؤسس الاقتصاد الإسلامي"},
+            {id: 35, name: "زهير بن أبي سلمى", title: "أعظم شاعر في التاريخ"},
+            {id: 36, name: "هارون الرشيد", title: "الخليفة الناسك"},
+            {id: 37, name: "أحمد بن فضلان", title: "المحارب الثالث عشر"},
+            {id: 38, name: "عبد العزيز الثعالبي", title: "نسر تونس الخضراء"},
+            {id: 39, name: "عز الدين القسام", title: "قائد ثورة فلسطين"},
+            {id: 40, name: "أحمد ديدات", title: "أسد جنوب أفريقيا"},
+            {id: 41, name: "محمد بن تومرت", title: "مؤسس دولة الموحدين"},
+            {id: 42, name: "يوسف بن تاشفين", title: "أمير المرابطين"},
+            {id: 43, name: "عبد المؤمن بن علي", title: "المستنصر بالله"},
+            {id: 44, name: "علي بن يوسف بن تاشفين", title: "أمير المسلمين"},
+            {id: 45, name: "أبو يعقوب المنصور", title: "المهدي بن عبد المؤمن"},
+            {id: 46, name: "محمد بن أبي عامر", title: "المنصور"},
+            {id: 47, name: "عبد الرحمن الداخل", title: "صقر قريش"},
+            {id: 48, name: "الحكم بن هشام", title: "الحكم الأول"},
+            {id: 49, name: "عبد الرحمن الثاني", title: "الأوسط"},
+            {id: 50, name: "محمد بن يوسف بن تاشفين", title: "الخليفة الأخير"},
+            {id: 51, name: "أبو عبد الله بن عبد الرحمن", title: "آخر ملك غرناطة"},
+            {id: 52, name: "ألفونسو السادس", title: "ملك قشتالة"},
+            {id: 53, name: "شارل مارتل", title: "البطل الأوروبي"},
+            {id: 54, name: "محمد بن مردنيش", title: "قائد الثورة"},
+            {id: 55, name: "أبو عبد الله بن عباد", title: "آخر ملك بني عباد"}
+        ];
+        const grid = document.getElementById('figuresGrid');
+        figures.forEach(f => {
+            grid.innerHTML += `<div class="figure-card" onclick="location.href='figure.html?id=${f.id}'">
+                <div class="figure-name">${f.name}</div>
+                <div class="figure-title">${f.title}</div>
+            </div>`;
+        });
+    </script>
+</body>
+</html>
